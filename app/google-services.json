@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "427009978913",
+    "project_id": "restop-5318d",
+    "storage_bucket": "restop-5318d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427009978913:android:24248eac15de1872b52960",
+        "android_client_info": {
+          "package_name": "com.ut3.restop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5tonNUtZ7qRNFgxrKfNo3BXw9Zt9SO8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
