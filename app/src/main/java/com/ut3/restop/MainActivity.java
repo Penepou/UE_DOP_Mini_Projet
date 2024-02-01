@@ -20,13 +20,14 @@ public class MainActivity extends AppCompatActivity {
         List<Restaurant> restaurantList = getRestaurantList();
 
         // Obtenez le conteneur de la liste dans votre layout
-        LinearLayout restaurantContainer = findViewById(R.id.restaurant_container);
+        LinearLayout restaurantContainer = findViewById(R.id.restaurants_container);
 
         // Ajoutez une carte pour chaque restaurant dans la liste
         for (Restaurant restaurant : restaurantList) {
             RestaurantCardView cardView = new RestaurantCardView(this);
             cardView.setRestaurantName(restaurant.getName());
             cardView.setRestaurantPrice(restaurant.getPrice());
+
             restaurantContainer.addView(cardView);
         }
     }
