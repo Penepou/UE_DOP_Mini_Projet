@@ -10,15 +10,6 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
-//import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 public class MainActivity extends AppCompatActivity {
   
     //private FirebaseAnalytics mFirebaseAnalytics;
@@ -50,29 +41,16 @@ public class MainActivity extends AppCompatActivity {
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(new Restaurant("Restaurant 1", "10-20"));
         restaurants.add(new Restaurant("Restaurant 2", "20-30"));
+        restaurants.add(new Restaurant("Restaurant 3", "0-20"));
+        restaurants.add(new Restaurant("Restaurant 4", "20-70"));
+        restaurants.add(new Restaurant("Restaurant 5", "0-40"));
+        restaurants.add(new Restaurant("Restaurant 6", "20-60"));
+        restaurants.add(new Restaurant("Restaurant 7", "50-90"));
+        restaurants.add(new Restaurant("Restaurant 8", "20-30"));
+        restaurants.add(new Restaurant("Restaurant 9", "20-50"));
+
+
         // ...
         return restaurants;
     }
-        //mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello, World!");
-
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                System.out.println("bonjour je suis là");
-                Log.d(TAG, "Value is: " + value);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
 }
