@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="403dp"
+        android:layout_height="383dp"
+
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="188dp"
+            app:srcCompat="@drawable/petoche" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="113dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/restau_nom"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="NOM" />
+
+            <TextView
+                android:id="@+id/restau_prix_moyen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRIX MOYEN" />
+
+            <TextView
+                android:id="@+id/restau_horaires"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HORAIRES" />
+
+            <TextView
+                android:id="@+id/restau_note_moyenne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NOTE MOYENNE" />
+
+            <TextView
+                android:id="@+id/restau_adresse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ADRESSE" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:gravity="center"
+            android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_in_eu_mauris_nulla_cras_convallis_elit_nec_quam_gravida_vitae_ultrices_neque_interdum_nunc_feugiat_justo_vitae_quam_fermentum_et_accumsan_elit_efficitur_duis_consequat_interdum_risus_ac_consequat_sed_facilisis_nibh_quis_sem_scelerisque_porta_etiam_aliquet_nisi_id_metus_interdum_sed_sollicitudin_elit_feugiat_phasellus_varius_porta_eros_id_laoreet_nunc_augue_nulla_volutpat_sed_tellus_eget_tempor_faucibus_velit" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="405dp"
+        android:layout_height="206dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+
+        <LinearLayout
+            android:id="@+id/menus_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="406dp"
+        android:layout_height="88dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        tools:layout_editor_absoluteX="0dp">
+
+        <Button
+            android:id="@+id/restau_avis"
+            android:layout_width="412dp"
+            android:layout_height="48dp"
+            android:text="LAISSER UN AVIS" />
+
+        <Button
+            android:id="@+id/restau_reserver"
+            android:layout_width="411dp"
+            android:layout_height="44dp"
+            android:text="RESERVER" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
