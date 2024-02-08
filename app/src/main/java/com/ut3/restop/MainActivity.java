@@ -41,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(new Restaurant("Restaurant 1", "10-20"));
         restaurants.add(new Restaurant("Restaurant 2", "20-30"));
+        restaurants.add(new Restaurant("Restaurant 3", "0-20"));
+        restaurants.add(new Restaurant("Restaurant 4", "20-70"));
+        restaurants.add(new Restaurant("Restaurant 5", "0-40"));
+        restaurants.add(new Restaurant("Restaurant 6", "20-60"));
+        restaurants.add(new Restaurant("Restaurant 7", "50-90"));
+        restaurants.add(new Restaurant("Restaurant 8", "20-30"));
+        restaurants.add(new Restaurant("Restaurant 9", "20-50"));
+
+
         // ...
         return restaurants;
     }
