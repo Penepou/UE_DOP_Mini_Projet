@@ -5,6 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <LinearLayout
+        android:id="@+id/main_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+    <include android:id="@+id/header" android:layout_width="match_parent" android:layout_height="wrap_content" layout="@layout/header" android:layout_marginBottom="3dp" />
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
@@ -17,10 +24,10 @@
             android:orientation="vertical"
             android:showDividers="middle"
             android:divider="@drawable/empty_tall_divider"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
