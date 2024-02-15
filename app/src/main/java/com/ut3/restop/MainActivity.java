@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         // (peut être une base de données, un service web, etc.)
         // Retournez une liste fictive pour l'exemple
         List<Restaurant> restaurants = new ArrayList<>();
+
         restaurants.add(new Restaurant("Restaurant 1", "10-20"));
         restaurants.add(new Restaurant("Restaurant 2", "20-30"));
         restaurants.add(new Restaurant("Restaurant 3", "0-20"));
