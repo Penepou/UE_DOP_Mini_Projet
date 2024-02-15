@@ -2,32 +2,37 @@ package com.ut3.restop;
 
 import static android.content.ContentValues.TAG;
 
+import static java.security.AccessController.getContext;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-  
-    //private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Assumez que vous avez une liste de restaurants
         List<Restaurant> restaurantList = getRestaurantList();
-
-        // Obtenez le conteneur de la liste dans votre layout
         LinearLayout restaurantContainer = findViewById(R.id.restaurants_container);
 
-        // Ajoutez une carte pour chaque restaurant dans la liste
         for (Restaurant restaurant : restaurantList) {
             RestaurantCardView cardView = new RestaurantCardView(this);
+            //Redirect to restaurantView for each restaurant card view
+            cardView.setOnClickListener(v -> {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, RestaurantView.class);
+                context.startActivity(intent);
+            });
             cardView.setRestaurantName(restaurant.getName());
             cardView.setRestaurantPrice(restaurant.getPrice());
 
@@ -36,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Restaurant> getRestaurantList() {
-        // Logique pour obtenir la liste des restaurants depuis une source de données
-        // (peut être une base de données, un service web, etc.)
-        // Retournez une liste fictive pour l'exemple
         List<Restaurant> restaurants = new ArrayList<>();
 
         restaurants.add(new Restaurant("Restaurant 1", "10-20"));
@@ -51,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         restaurants.add(new Restaurant("Restaurant 8", "20-30"));
         restaurants.add(new Restaurant("Restaurant 9", "20-50"));
 
-
-        // ...
         return restaurants;
     }
 }
