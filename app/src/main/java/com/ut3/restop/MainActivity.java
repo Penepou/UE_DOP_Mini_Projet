@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+  
     //private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         // (peut être une base de données, un service web, etc.)
         // Retournez une liste fictive pour l'exemple
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant("Menu 1", "10-20"));
-        restaurants.add(new Restaurant("Menu 2", "20-30"));
+
+        restaurants.add(new Restaurant("Restaurant 1", "10-20"));
+        restaurants.add(new Restaurant("Restaurant 2", "20-30"));
         restaurants.add(new Restaurant("Restaurant 3", "0-20"));
         restaurants.add(new Restaurant("Restaurant 4", "20-70"));
         restaurants.add(new Restaurant("Restaurant 5", "0-40"));
