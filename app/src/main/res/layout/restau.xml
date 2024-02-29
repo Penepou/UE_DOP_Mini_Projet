@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="403dp"
+        android:layout_width="match_parent"
         android:layout_height="383dp"
 
         android:orientation="vertical"
@@ -15,7 +15,7 @@
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+        <include android:id="@+id/header" android:layout_width="match_parent" android:layout_height="wrap_content" layout="@layout/header" android:layout_marginBottom="3dp" />
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="match_parent"
@@ -91,7 +91,7 @@
     </ScrollView>
 
     <LinearLayout
-        android:layout_width="406dp"
+        android:layout_width="match_parent"
         android:layout_height="88dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,13 +100,13 @@
 
         <Button
             android:id="@+id/restau_avis"
-            android:layout_width="412dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="LAISSER UN AVIS" />
 
         <Button
             android:id="@+id/restau_reserver"
-            android:layout_width="411dp"
+            android:layout_width="match_parent"
             android:layout_height="44dp"
             android:text="RESERVER" />
     </LinearLayout>
