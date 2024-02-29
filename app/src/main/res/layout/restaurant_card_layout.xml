@@ -4,8 +4,8 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="20dp"
+    app:cardBackgroundColor="#F7F2F9">
 
     <LinearLayout
         android:id="@+id/layoutCard"
@@ -16,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#F7F2F9">
 
         <ImageView
             android:id="@+id/restaurant_image"
@@ -35,7 +36,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/restaurant_image"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="40dp">
 
             <TextView
                 android:id="@+id/restaurant_name"
