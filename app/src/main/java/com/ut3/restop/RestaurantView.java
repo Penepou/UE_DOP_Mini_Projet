@@ -5,7 +5,11 @@ import static android.content.ContentValues.TAG;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -33,6 +37,16 @@ public class RestaurantView extends AppCompatActivity{
 
             menuContainer.addView(cardView);
         }
+        Button reservationButton = findViewById(R.id.restau_reserver);
+
+        reservationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, ReservationActivity.class);
+                context.startActivity(intent);
+            }
+        });
 
     }
 
