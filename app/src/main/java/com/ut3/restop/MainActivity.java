@@ -11,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             cardView.setOnClickListener(v -> {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, RestaurantView.class);
+                intent.putExtra("restaurant", new RestaurantParcel(restaurant));
+                intent.putExtra("image", new ImageParcel(cardView.getRestaurantImage()));
                 context.startActivity(intent);
             });
             cardView.setRestaurantName(restaurant.getName());
