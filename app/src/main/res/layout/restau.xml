@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".RestaurantView">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -17,10 +18,10 @@
         app:layout_constraintTop_toTopOf="parent">
         <include android:id="@+id/header" android:layout_width="match_parent" android:layout_height="wrap_content" layout="@layout/header" android:layout_marginBottom="3dp" />
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/image_restau"
             android:layout_width="match_parent"
             android:layout_height="188dp"
-            app:srcCompat="@drawable/petoche" />
+            app:srcCompat="@drawable/default_img" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                 android:text="NOM" />
 
             <TextView
-                android:id="@+id/restau_prix_moyen"
+                android:id="@+id/restau_prix"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PRIX MOYEN" />

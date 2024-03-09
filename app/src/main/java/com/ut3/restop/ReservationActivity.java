@@ -112,11 +112,6 @@ public class ReservationActivity extends AppCompatActivity {
 
                 // Envoyer les informations à la page suivante
                 Intent intent = new Intent(ReservationActivity.this, RestaurantView.class);
-                //save avt
-                /*intent.putExtra("nbPersonnes", nbPersonnes);
-                intent.putExtra("date", calendar.getTime());
-                intent.putExtra("heure", calendar.get(Calendar.HOUR_OF_DAY));
-                intent.putExtra("minute", calendar.get(Calendar.MINUTE));*/
                 startActivity(intent);
             }
         });

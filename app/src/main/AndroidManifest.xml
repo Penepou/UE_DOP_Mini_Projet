@@ -39,6 +39,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".ImageService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".RestaurantService"
+            android:enabled="true"
+            android:exported="true" />
+        <meta-data android:name="android.os.PARCELABLE1" android:value=".RestaurantParcel" />
+        <meta-data android:name="android.os.PARCELABLE2" android:value=".ImageParcel" />
         <activity android:name=".LaisserAvisView" />
     </application>
 
