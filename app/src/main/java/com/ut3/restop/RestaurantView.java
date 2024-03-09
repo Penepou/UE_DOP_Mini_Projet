@@ -64,7 +64,6 @@ public class RestaurantView extends AppCompatActivity{
                 context.startActivity(intent);
             }
         });
-
     }
 
     private void displayRestauInformation() {
