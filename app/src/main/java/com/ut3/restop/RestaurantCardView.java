@@ -1,6 +1,9 @@
 package com.ut3.restop;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,9 +45,13 @@ public class RestaurantCardView extends CardView {
             restaurantNameTextView.setText(restaurantName);
         }
 
-        public void setRestaurantImage(int resourceId) {
-            restaurantImageView.setImageResource(resourceId);
+        public void setRestaurantImage(Bitmap image) {
+            restaurantImageView.setImageBitmap(image);
         }
+
+    public Bitmap getRestaurantImage() {
+        return ((BitmapDrawable) restaurantImageView.getDrawable()).getBitmap();
+    }
 
     public TextView getRestaurantPriceTextView() {
         return restaurantPriceTextView;
