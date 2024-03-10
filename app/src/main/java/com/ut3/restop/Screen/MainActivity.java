@@ -20,11 +20,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ut3.restop.EntityCardView.RestaurantCardView;
 import com.ut3.restop.Entity.Restaurant;
-import com.ut3.restop.ImageParcel;
-import com.ut3.restop.ImageService;
+import com.ut3.restop.Parcel.ImageParcel;
+import com.ut3.restop.Service.ImageService;
 import com.ut3.restop.R;
-import com.ut3.restop.RestaurantParcel;
-import com.ut3.restop.RestaurantService;
+import com.ut3.restop.Parcel.RestaurantParcel;
+import com.ut3.restop.Service.RestaurantService;
 
 import java.util.List;
 

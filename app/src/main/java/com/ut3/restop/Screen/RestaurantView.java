@@ -17,10 +17,9 @@ import com.ut3.restop.EntityCardView.MenuCardView;
 import com.ut3.restop.Entity.Comment;
 import com.ut3.restop.Entity.Menu;
 import com.ut3.restop.Entity.Restaurant;
-import com.ut3.restop.ImageParcel;
+import com.ut3.restop.Parcel.ImageParcel;
 import com.ut3.restop.R;
-import com.ut3.restop.ReservationActivity;
-import com.ut3.restop.RestaurantParcel;
+import com.ut3.restop.Parcel.RestaurantParcel;
 
 import java.util.ArrayList;
 import java.util.List;

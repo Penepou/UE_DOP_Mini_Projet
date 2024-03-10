@@ -1,4 +1,4 @@
-package com.ut3.restop;
+package com.ut3.restop.Service;
 
 import android.app.Service;
 import android.content.Intent;

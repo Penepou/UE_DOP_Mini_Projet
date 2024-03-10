@@ -1,4 +1,4 @@
-package com.ut3.restop;
+package com.ut3.restop.Parcel;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;

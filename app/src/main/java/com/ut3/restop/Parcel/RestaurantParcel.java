@@ -1,4 +1,4 @@
-package com.ut3.restop;
+package com.ut3.restop.Parcel;
 
 import android.os.Parcel;
 import android.os.Parcelable;

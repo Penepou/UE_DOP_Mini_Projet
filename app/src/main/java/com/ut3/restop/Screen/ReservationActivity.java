@@ -1,4 +1,4 @@
-package com.ut3.restop;
+package com.ut3.restop.Screen;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ut3.restop.Screen.RestaurantView;
+import com.ut3.restop.R;
 
 import java.util.Calendar;
 import java.util.Date;
