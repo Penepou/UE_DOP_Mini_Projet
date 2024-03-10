@@ -1,4 +1,4 @@
-package com.ut3.restop;
+package com.ut3.restop.EntityCardView;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+
+import com.ut3.restop.R;
 
 public class RestaurantCardView extends CardView {
 

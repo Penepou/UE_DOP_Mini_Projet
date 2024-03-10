@@ -1,7 +1,9 @@
-package com.ut3.restop;
+package com.ut3.restop.Parcel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.ut3.restop.Entity.Restaurant;
 
 public class RestaurantParcel implements Parcelable {
 

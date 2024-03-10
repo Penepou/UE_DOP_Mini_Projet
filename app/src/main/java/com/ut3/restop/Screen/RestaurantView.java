@@ -1,31 +1,31 @@
-package com.ut3.restop;
-
-import static android.content.ContentValues.TAG;
+package com.ut3.restop.Screen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ut3.restop.EntityCardView.CommentCardView;
+import com.ut3.restop.EntityCardView.MenuCardView;
+import com.ut3.restop.Entity.Comment;
+import com.ut3.restop.Entity.Menu;
+import com.ut3.restop.Entity.Restaurant;
+import com.ut3.restop.Parcel.ImageParcel;
+import com.ut3.restop.R;
+import com.ut3.restop.Parcel.RestaurantParcel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class RestaurantView extends AppCompatActivity{
-
     private Restaurant restaurant;
     private Bitmap restaurantImage;
     @Override
@@ -41,9 +41,11 @@ public class RestaurantView extends AppCompatActivity{
         displayRestauInformation();
 
         List<Menu> menus = getMenuList();
+        List<Comment> comments = getCommentList();
 
         // Obtenez le conteneur de la liste dans votre layout
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) LinearLayout menuContainer = findViewById(R.id.menus_list);
+        LinearLayout menuContainer = findViewById(R.id.menus_list);
+        LinearLayout commentContainer = findViewById(R.id.comment_list);
 
         // Ajoutez une carte pour chaque restaurant dans la liste
         for (Menu menu : menus) {
@@ -54,6 +56,16 @@ public class RestaurantView extends AppCompatActivity{
 
             menuContainer.addView(cardView);
         }
+
+        for (Comment comment : comments) {
+            CommentCardView cardView = new CommentCardView(this);
+            cardView.setTitleTextView(comment.getTitle());
+            cardView.setDescriptionTextView(comment.getDescription());
+            cardView.setPseudoTextView(comment.getPseudo());
+
+            commentContainer.addView(cardView);
+        }
+
         Button reservationButton = findViewById(R.id.restau_reserver);
 
         reservationButton.setOnClickListener(new View.OnClickListener() {
@@ -98,5 +110,14 @@ public class RestaurantView extends AppCompatActivity{
         menus.add(new Menu("Menu 1", "12.5", ingredients));
 
         return menus;
+    }
+
+    private List<Comment> getCommentList() {
+        List<Comment> comments = new ArrayList<>();
+        comments.add(new Comment("trop bien", "c e tait trop bien", "test", "connard"));
+        comments.add(new Comment("nul", "c e tait trop bien", "test", "caca"));
+        comments.add(new Comment("jsais pas", "c e tait trop bien", "test", "oui"));
+
+        return comments;
     }
 }

@@ -1,6 +1,4 @@
-package com.ut3.restop;
-
-import android.net.Uri;
+package com.ut3.restop.Entity;
 
 public class Restaurant {
     public String name;

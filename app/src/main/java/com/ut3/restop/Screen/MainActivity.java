@@ -1,21 +1,13 @@
-package com.ut3.restop;
-
-import static android.content.ContentValues.TAG;
-
-import static java.security.AccessController.getContext;
+package com.ut3.restop.Screen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,8 +18,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ut3.restop.EntityCardView.RestaurantCardView;
+import com.ut3.restop.Entity.Restaurant;
+import com.ut3.restop.Parcel.ImageParcel;
+import com.ut3.restop.Service.ImageService;
+import com.ut3.restop.R;
+import com.ut3.restop.Parcel.RestaurantParcel;
+import com.ut3.restop.Service.RestaurantService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ServiceConnection {
