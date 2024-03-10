@@ -1,4 +1,4 @@
-package com.ut3.restop;
+package com.ut3.restop.EntityCardView;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+
+import com.ut3.restop.R;
 
 public class MenuCardView extends CardView {
 
@@ -33,7 +35,7 @@ public class MenuCardView extends CardView {
             inflate(getContext(), R.layout.menu_card_layout, this);
             menuNameTextView = findViewById(R.id.menu_name);
             menuPriceTextView = findViewById(R.id.menu_price);
-            menuImageView = findViewById(R.id.menu_image);
+            menuImageView = findViewById(R.id.comment_image);
             menuIngredientsTextView = findViewById(R.id.menu_ingredients);
         }
 

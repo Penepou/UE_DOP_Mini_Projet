@@ -14,8 +14,6 @@
 
     <TextView
         android:id="@+id/titleView"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="100dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="LAISSER UN AVIS"
         android:textSize="20sp"
@@ -23,7 +21,9 @@
         app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/genericComponent" android:layout_height="0dp" android:layout_width="0dp"/>
+        app:layout_constraintTop_toTopOf="@+id/genericComponent"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
     <EditText
         android:id="@+id/titleInput"
@@ -47,32 +47,36 @@
         android:background="#B5BAB4"
         android:gravity="left"
         android:inputType="text"
-        android:hint="commentaire...."
-        app:layout_constraintBottom_toBottomOf="@+id/laisserAvis"
+        android:hint="Commentaire...."
+        app:layout_constraintBottom_toBottomOf="@+id/linearButtons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/genericComponent"
         android:layout_height="0dp" android:layout_width="match_parent"/>
 
-    <Button
-        android:id="@+id/prendrePhoto"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="75dp"
-        android:text="PRENDRE UNE PHOTO"
-        app:layout_constraintBottom_toTopOf="@+id/laisserAvis"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        android:layout_height="wrap_content" android:layout_width="match_parent"/>
-
-    <Button
-        android:id="@+id/laisserAvis"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="30dp"
-        android:text="LAISSER UN AVIS"
+    <LinearLayout
+        android:id="@+id/linearButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="50dp" android:layout_width="match_parent"/>
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/prendrePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/button_margin_horizontal"
+            android:text="PRENDRE UNE PHOTO" />
+
+        <Button
+            android:id="@+id/laisserAvis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/button_margin_horizontal"
+            android:text="LAISSER UN AVIS" />
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

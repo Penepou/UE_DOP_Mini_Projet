@@ -1,4 +1,4 @@
-package com.ut3.restop;
+package com.ut3.restop.Entity;
 
 import java.util.List;
 

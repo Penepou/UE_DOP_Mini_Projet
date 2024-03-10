@@ -3,7 +3,6 @@ package com.ut3.restop;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -16,6 +15,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.ut3.restop.Screen.RestaurantView;
 
 import java.util.Calendar;
 import java.util.Date;

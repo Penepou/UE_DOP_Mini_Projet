@@ -3,6 +3,8 @@ package com.ut3.restop;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.ut3.restop.Entity.Restaurant;
+
 public class RestaurantParcel implements Parcelable {
 
     private String name;
