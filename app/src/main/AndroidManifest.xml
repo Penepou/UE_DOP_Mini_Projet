@@ -39,6 +39,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Screen.MapActivity" android:exported="true">
+
+        </activity>
+
         <service
             android:name=".Service.ImageService"
             android:enabled="true"
@@ -51,5 +56,9 @@
         <meta-data android:name="android.os.PARCELABLE2" android:value=".ImageParcel" />
         <activity android:name=".Screen.LaisserAvisView" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"  />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
 </manifest>
