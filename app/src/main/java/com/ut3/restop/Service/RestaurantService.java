@@ -55,7 +55,9 @@ public class RestaurantService extends Service {
                     String name = snapshot.child("name").getValue(String.class);
                     String price = snapshot.child("price").getValue(String.class);
                     String image = snapshot.child("image").getValue(String.class);
-                    restaurantList.add(new Restaurant(name, price, image));
+                    float latitude = snapshot.child("latitude").getValue(float.class);
+                    float longitude = snapshot.child("longitude").getValue(float.class);
+                    restaurantList.add(new Restaurant(name, price, image, latitude, longitude));
                 }
                 future.complete(restaurantList);
             }
