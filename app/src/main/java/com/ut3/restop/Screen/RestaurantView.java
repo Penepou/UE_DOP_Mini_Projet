@@ -89,7 +89,7 @@ public class RestaurantView extends AppCompatActivity{
         Button laisserAvisButton = findViewById(R.id.restau_avis);
         laisserAvisButton.setOnClickListener(v -> {
             Context context = v.getContext();
-            Intent intent = new Intent(context, LaisserAvisView.class);
+            Intent intent = new Intent(context, CommentActivity.class);
             context.startActivity(intent);
         });
 
