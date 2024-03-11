@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +39,13 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         setContentView(R.layout.activity_main);
         bindService(new Intent(this, ImageService.class), this, Context.BIND_AUTO_CREATE);
         bindService(new Intent(this, RestaurantService.class), this, Context.BIND_AUTO_CREATE);
+        ImageView imageView = findViewById(R.id.map_icon);
+        imageView.setOnClickListener(v->{
+            Context context = v.getContext();
+            Intent intent = new Intent(context, MapActivity.class);
+            context.startActivity(intent);
+        });
+
     }
 
     private void fetchAndDisplayRestaurants() {
