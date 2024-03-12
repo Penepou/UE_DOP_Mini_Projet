@@ -93,14 +93,21 @@ public class CommentActivity extends AppCompatActivity implements ServiceConnect
         laisserAvisButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CompletableFuture<List<String>> futureUris = imageService.saveCommentImages(images);
-                futureUris.thenAccept(uris -> {
-                    Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(),uris);
+                if(images.isEmpty()){
+                    Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(),new ArrayList<>());
                     restaurantService.addCommentToRestaurant(idRestaurant,comment);
                     finish();
-                }).exceptionally(e -> {
-                    return null;
-                });
+                }
+                else {
+                    CompletableFuture<List<String>> futureUris = imageService.saveCommentImages(images);
+                    futureUris.thenAccept(uris -> {
+                        Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(), uris);
+                        restaurantService.addCommentToRestaurant(idRestaurant, comment);
+                        finish();
+                    }).exceptionally(e -> {
+                        return null;
+                    });
+                }
             }
         });
     }
