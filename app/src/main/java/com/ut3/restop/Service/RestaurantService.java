@@ -59,6 +59,8 @@ public class RestaurantService extends Service {
                     String name = snapshot.child("name").getValue(String.class);
                     String price = snapshot.child("price").getValue(String.class);
                     String image = snapshot.child("image").getValue(String.class);
+                    float latitude = snapshot.child("latitude").getValue(float.class);
+                    float longitude = snapshot.child("longitude").getValue(float.class);
                     List<Comment> comments = new ArrayList<>();
                     for (DataSnapshot comment : snapshot.child("comments").getChildren()) {
                         String title = comment.child("title").getValue(String.class);
@@ -69,7 +71,7 @@ public class RestaurantService extends Service {
                         }
                         comments.add(new Comment(title,description,images));
                     }
-                    restaurantList.add(new Restaurant(id, name, price, image, comments));
+                    restaurantList.add(new Restaurant(id, name, price, image, comments, latitude, longitude));
                 }
                 future.complete(restaurantList);
             }
