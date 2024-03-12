@@ -3,28 +3,42 @@ package com.ut3.restop.Parcel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.ut3.restop.Entity.Comment;
 import com.ut3.restop.Entity.Restaurant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantParcel implements Parcelable {
 
+    private String id;
     private String name;
     private String price;
     private String image;
+    private List<CommentParcel> comments;
     public float latitude;
     public float longitude;
 
     public RestaurantParcel(Restaurant restaurant) {
+        this.id = restaurant.getId();
         this.name = restaurant.getName();
         this.price = restaurant.getPrice();
         this.image = restaurant.getImage();
+        this.comments = new ArrayList<>();
+        for (Comment comment : restaurant.getComments()) {
+            this.comments.add(new CommentParcel(comment));
+        }
         this.latitude = restaurant.getLatitude();
         this.longitude = restaurant.getLongitude();
     }
 
     protected RestaurantParcel(Parcel in) {
+        id = in.readString();
         name = in.readString();
         price = in.readString();
         image = in.readString();
+        comments = new ArrayList<>();
+        in.readTypedList(comments, CommentParcel.CREATOR);
         latitude = in.readFloat();
         longitude = in.readFloat();
     }
@@ -41,6 +55,10 @@ public class RestaurantParcel implements Parcelable {
         }
     };
 
+    public String getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -53,6 +71,10 @@ public class RestaurantParcel implements Parcelable {
         return image;
     }
 
+    public List<CommentParcel> getComments() {
+        return comments;
+    }
+  
     public float getLatitude() {
         return latitude;
     }
@@ -68,14 +90,21 @@ public class RestaurantParcel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(price);
         dest.writeString(image);
-        dest.writeFloat(latitude);
+        dest.writeTypedList(comments);
         dest.writeFloat(longitude);
+        dest.writeFloat(latitude);
     }
 
     public Restaurant getRestaurant() {
-        return new Restaurant(name,price,image,latitude,longitude);
+        List<Comment> commentList = new ArrayList<>();
+        for (CommentParcel commentParcel : comments) {
+            commentList.add(commentParcel.getComment());
+        }
+        return new Restaurant(id, name, price, image, commentList, latitude,  longitude);
     }
+
 }

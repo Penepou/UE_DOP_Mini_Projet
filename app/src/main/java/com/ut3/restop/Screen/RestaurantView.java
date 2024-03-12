@@ -41,7 +41,7 @@ public class RestaurantView extends AppCompatActivity{
         displayRestauInformation();
 
         List<Menu> menus = getMenuList();
-        List<Comment> comments = getCommentList();
+        List<Comment> comments = restaurant.getComments();
 
         // Obtenez le conteneur de la liste dans votre layout
         LinearLayout menuContainer = findViewById(R.id.menus_list);
@@ -61,7 +61,7 @@ public class RestaurantView extends AppCompatActivity{
             CommentCardView cardView = new CommentCardView(this);
             cardView.setTitleTextView(comment.getTitle());
             cardView.setDescriptionTextView(comment.getDescription());
-            cardView.setPseudoTextView(comment.getPseudo());
+            cardView.setPseudoTextView("Paul");
 
             commentContainer.addView(cardView);
         }
@@ -89,7 +89,8 @@ public class RestaurantView extends AppCompatActivity{
         Button laisserAvisButton = findViewById(R.id.restau_avis);
         laisserAvisButton.setOnClickListener(v -> {
             Context context = v.getContext();
-            Intent intent = new Intent(context, LaisserAvisView.class);
+            Intent intent = new Intent(context, CommentActivity.class);
+            intent.putExtra("id",restaurant.getId());
             context.startActivity(intent);
         });
 
@@ -110,14 +111,5 @@ public class RestaurantView extends AppCompatActivity{
         menus.add(new Menu("Menu 1", "12.5", ingredients));
 
         return menus;
-    }
-
-    private List<Comment> getCommentList() {
-        List<Comment> comments = new ArrayList<>();
-        comments.add(new Comment("trop bien", "c e tait trop bien", "test", "connard"));
-        comments.add(new Comment("nul", "c e tait trop bien", "test", "caca"));
-        comments.add(new Comment("jsais pas", "c e tait trop bien", "test", "oui"));
-
-        return comments;
     }
 }

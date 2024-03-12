@@ -49,7 +49,8 @@
             android:exported="true" />
         <meta-data android:name="android.os.PARCELABLE1" android:value=".RestaurantParcel" />
         <meta-data android:name="android.os.PARCELABLE2" android:value=".ImageParcel" />
-        <activity android:name=".Screen.LaisserAvisView" />
+        <activity android:name=".Screen.CommentActivity" />
+        <activity android:name=".Screen.EditImageActivity" />
     </application>
 
 </manifest>

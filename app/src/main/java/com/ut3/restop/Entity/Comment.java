@@ -1,19 +1,19 @@
 package com.ut3.restop.Entity;
 
+import java.util.List;
+
 public class Comment {
     private String title;
     private String description;
-    private String image;
-    private String pseudo;
+    private List<String> images;
 
     public Comment(){
 
     }
-    public Comment(String title, String description, String image, String pseudo) {
+    public Comment(String title, String description, List<String> images) {
         this.title = title;
         this.description = description;
-        this.image = image;
-        this.pseudo = pseudo;
+        this.images = images;
     }
 
     public String getTitle() {
@@ -32,19 +32,11 @@ public class Comment {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public List<String> getImages() {
+        return images;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getPseudo() {
-        return pseudo;
-    }
-
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public void setImage(List<String> images) {
+        this.images = images;
     }
 }
