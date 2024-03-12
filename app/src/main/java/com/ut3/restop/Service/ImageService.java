@@ -57,7 +57,7 @@ public class ImageService extends Service {
     public CompletableFuture<List<String>> saveCommentImages(List<Bitmap> bitmaps) {
         CompletableFuture<List<String>> future = new CompletableFuture<>();
 
-        StorageReference imagesRef = storage.getReference().child("images/comment");
+        StorageReference imagesRef = storage.getReference().child("Images/comments");
         imagesRef.listAll().addOnSuccessListener(listResult -> {
             int count = listResult.getItems().size();
 
