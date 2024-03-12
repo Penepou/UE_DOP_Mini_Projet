@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ut3.restop.Entity.Comment;
 import com.ut3.restop.Entity.Restaurant;
 
 import java.util.ArrayList;
@@ -52,10 +55,21 @@ public class RestaurantService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Restaurant> restaurantList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String id = snapshot.getKey();
                     String name = snapshot.child("name").getValue(String.class);
                     String price = snapshot.child("price").getValue(String.class);
                     String image = snapshot.child("image").getValue(String.class);
-                    restaurantList.add(new Restaurant(name, price, image));
+                    List<Comment> comments = new ArrayList<>();
+                    for (DataSnapshot comment : snapshot.child("comments").getChildren()) {
+                        String title = comment.child("title").getValue(String.class);
+                        String description = comment.child("description").getValue(String.class);
+                        List<String> images = new ArrayList<>();
+                        for (DataSnapshot imageComment : comment.child("images").getChildren()) {
+                            images.add(imageComment.getValue(String.class));
+                        }
+                        comments.add(new Comment(title,description,images));
+                    }
+                    restaurantList.add(new Restaurant(id, name, price, image, comments));
                 }
                 future.complete(restaurantList);
             }
@@ -67,5 +81,19 @@ public class RestaurantService extends Service {
         });
         return future;
     }
+
+    public void addCommentToRestaurant(String restaurantId, Comment comment) {
+        DatabaseReference restaurantRef = database.getReference("restaurants").child(restaurantId).child("comments").push();
+        restaurantRef.setValue(comment)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {}
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {}
+                });
+    }
+
 
 }

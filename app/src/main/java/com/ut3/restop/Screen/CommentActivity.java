@@ -1,8 +1,12 @@
 package com.ut3.restop.Screen;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,14 +18,22 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ut3.restop.Entity.Comment;
 import com.ut3.restop.R;
+import com.ut3.restop.Service.ImageService;
+import com.ut3.restop.Service.RestaurantService;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-public class CommentActivity extends AppCompatActivity {
+public class CommentActivity extends AppCompatActivity implements ServiceConnection {
+
+    private ImageService imageService;
+    private RestaurantService restaurantService;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ActivityResultLauncher<Intent> takePictureLauncher;
 
@@ -37,7 +49,11 @@ public class CommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment);
+        bindService(new Intent(this, ImageService.class), this, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, RestaurantService.class), this, Context.BIND_AUTO_CREATE);
         imagesLayout = findViewById(R.id.images);
+        Intent intent = getIntent();
+        String idRestaurant = intent.getStringExtra("id");
 
         takePictureLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -77,8 +93,14 @@ public class CommentActivity extends AppCompatActivity {
         laisserAvisButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Ajouter ici la logique pour traiter le clic
-                // Par exemple, envoyer l'avis
+                CompletableFuture<List<String>> futureUris = imageService.saveCommentImages(images);
+                futureUris.thenAccept(uris -> {
+                    Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(),uris);
+                    restaurantService.addCommentToRestaurant(idRestaurant,comment);
+                    finish();
+                }).exceptionally(e -> {
+                    return null;
+                });
             }
         });
     }
@@ -128,7 +150,24 @@ public class CommentActivity extends AppCompatActivity {
 
     // Mettre à jour l'état du bouton en fonction du contenu des EditText
     private void updateButtonState() {
-        boolean isFieldsFilled = titleInput.getText().length() > 0 && editText.getText().length() > 0;
+        boolean isFieldsFilled = titleInput.getText().length() > 0 && editText.getText().length() > 0 && imageService!= null && restaurantService!= null;
         laisserAvisButton.setEnabled(isFieldsFilled);
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        if (componentName.equals(new ComponentName(this, ImageService.class))) {
+            ImageService.LocalBinder localBinder = (ImageService.LocalBinder) iBinder;
+            imageService = localBinder.getService();
+        }
+        if (componentName.equals(new ComponentName(this, RestaurantService.class))) {
+            RestaurantService.LocalBinder localBinder = (RestaurantService.LocalBinder) iBinder;
+            restaurantService = localBinder.getService();
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+        imageService = null;
     }
 }
