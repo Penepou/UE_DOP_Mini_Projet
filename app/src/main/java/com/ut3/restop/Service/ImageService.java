@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 
@@ -13,6 +14,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ImageService extends Service {
@@ -49,5 +53,43 @@ public class ImageService extends Service {
         });
         return future;
     }
+
+    public CompletableFuture<List<String>> saveCommentImages(List<Bitmap> bitmaps) {
+        CompletableFuture<List<String>> future = new CompletableFuture<>();
+
+        StorageReference imagesRef = storage.getReference().child("images/comment");
+        imagesRef.listAll().addOnSuccessListener(listResult -> {
+            int count = listResult.getItems().size();
+
+            List<String> uris = new ArrayList<>();
+
+            for (int i = 0; i < bitmaps.size(); i++) {
+                Bitmap bitmap = bitmaps.get(i);
+                String imageName = "image_" + (count + i);
+
+                StorageReference imageRef = imagesRef.child(imageName);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+
+                imageRef.putBytes(data).addOnSuccessListener(taskSnapshot -> {
+                    // Récupérer l'URI de l'image enregistrée
+                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        uris.add(uri.toString());
+                        // Si toutes les images ont été traitées, compléter le CompletableFuture avec la liste d'URI
+                        if (uris.size() == bitmaps.size()) {
+                            future.complete(uris);
+                        }
+                    });
+                }).addOnFailureListener(e -> {
+                    // En cas d'échec, compléter le CompletableFuture avec une liste vide
+                    future.complete(new ArrayList<>());
+                });
+            }
+        });
+
+        return future;
+    }
+
 
 }

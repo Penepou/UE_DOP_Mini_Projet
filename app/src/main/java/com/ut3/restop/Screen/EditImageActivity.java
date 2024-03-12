@@ -56,6 +56,7 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
 
         imageView = findViewById(R.id.imageView);
         imageBitmap = getIntent().getParcelableExtra("imageBitmap");
+        int indice = getIntent().getIntExtra("indice",0);
         imageResult = imageBitmap;
         imageView.setImageBitmap(imageResult);
         imageView.setFocusable(true);
@@ -133,6 +134,7 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("deleteImage", true);
+                resultIntent.putExtra("indice",indice);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }
@@ -145,6 +147,7 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("image", imageResult);
                 resultIntent.putExtra("deleteImage", false);
+                resultIntent.putExtra("indice",indice);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }
