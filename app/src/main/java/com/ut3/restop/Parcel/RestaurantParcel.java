@@ -16,6 +16,8 @@ public class RestaurantParcel implements Parcelable {
     private String price;
     private String image;
     private List<CommentParcel> comments;
+    public float latitude;
+    public float longitude;
 
     public RestaurantParcel(Restaurant restaurant) {
         this.id = restaurant.getId();
@@ -26,6 +28,8 @@ public class RestaurantParcel implements Parcelable {
         for (Comment comment : restaurant.getComments()) {
             this.comments.add(new CommentParcel(comment));
         }
+        this.latitude = restaurant.getLatitude();
+        this.longitude = restaurant.getLongitude();
     }
 
     protected RestaurantParcel(Parcel in) {
@@ -35,6 +39,8 @@ public class RestaurantParcel implements Parcelable {
         image = in.readString();
         comments = new ArrayList<>();
         in.readTypedList(comments, CommentParcel.CREATOR);
+        latitude = in.readFloat();
+        longitude = in.readFloat();
     }
 
     public static final Parcelable.Creator<RestaurantParcel> CREATOR = new Creator<RestaurantParcel>() {
@@ -68,6 +74,14 @@ public class RestaurantParcel implements Parcelable {
     public List<CommentParcel> getComments() {
         return comments;
     }
+  
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
 
     @Override
     public int describeContents() {
@@ -81,6 +95,8 @@ public class RestaurantParcel implements Parcelable {
         dest.writeString(price);
         dest.writeString(image);
         dest.writeTypedList(comments);
+        dest.writeFloat(longitude);
+        dest.writeFloat(latitude);
     }
 
     public Restaurant getRestaurant() {
@@ -88,6 +104,7 @@ public class RestaurantParcel implements Parcelable {
         for (CommentParcel commentParcel : comments) {
             commentList.add(commentParcel.getComment());
         }
-        return new Restaurant(id, name, price, image, commentList);
+        return new Restaurant(id, name, price, image, commentList, latitude,  longitude);
     }
+
 }
