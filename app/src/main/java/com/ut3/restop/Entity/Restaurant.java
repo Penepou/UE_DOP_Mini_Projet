@@ -6,11 +6,17 @@ public class Restaurant {
 
     public String image;
 
+    public float latitude;
+
+    public float longitude;
+
     public Restaurant(){}
-    public Restaurant(String name, String price, String image) {
+    public Restaurant(String name, String price, String image, float latitude, float longitude) {
         this.name = name;
         this.price = price;
         this.image = image;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getName() {
@@ -35,5 +41,21 @@ public class Restaurant {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
     }
 }

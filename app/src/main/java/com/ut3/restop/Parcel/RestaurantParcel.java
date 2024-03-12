@@ -10,17 +10,23 @@ public class RestaurantParcel implements Parcelable {
     private String name;
     private String price;
     private String image;
+    public float latitude;
+    public float longitude;
 
     public RestaurantParcel(Restaurant restaurant) {
         this.name = restaurant.getName();
         this.price = restaurant.getPrice();
         this.image = restaurant.getImage();
+        this.latitude = restaurant.getLatitude();
+        this.longitude = restaurant.getLongitude();
     }
 
     protected RestaurantParcel(Parcel in) {
         name = in.readString();
         price = in.readString();
         image = in.readString();
+        latitude = in.readFloat();
+        longitude = in.readFloat();
     }
 
     public static final Parcelable.Creator<RestaurantParcel> CREATOR = new Creator<RestaurantParcel>() {
@@ -47,6 +53,14 @@ public class RestaurantParcel implements Parcelable {
         return image;
     }
 
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -57,9 +71,11 @@ public class RestaurantParcel implements Parcelable {
         dest.writeString(name);
         dest.writeString(price);
         dest.writeString(image);
+        dest.writeFloat(latitude);
+        dest.writeFloat(longitude);
     }
 
     public Restaurant getRestaurant() {
-        return new Restaurant(name,price,image);
+        return new Restaurant(name,price,image,latitude,longitude);
     }
 }
