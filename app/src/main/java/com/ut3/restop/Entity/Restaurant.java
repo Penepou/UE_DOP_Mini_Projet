@@ -67,6 +67,8 @@ public class Restaurant {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
     public float getLatitude() {
         return latitude;
     }

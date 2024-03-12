@@ -112,7 +112,7 @@ public class ReservationActivity extends AppCompatActivity {
                 int nbPersonnes = Integer.parseInt(spinnerNbPersonnes.getSelectedItem().toString());
 
                 // Envoyer les informations à la page suivante
-                Intent intent = new Intent(ReservationActivity.this, RestaurantView.class);
+                Intent intent = new Intent(ReservationActivity.this, ReservationDoneActivity.class);
                 startActivity(intent);
             }
         });
