@@ -65,6 +65,7 @@ public class CommentActivity extends AppCompatActivity {
                 } else {
                     Bitmap result = (Bitmap) data.getExtras().getParcelable("image");
                     image.setImageBitmap(result);
+
                 }
             }
         }

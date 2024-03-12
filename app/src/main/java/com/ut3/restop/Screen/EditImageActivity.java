@@ -10,12 +10,12 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,24 +25,19 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ut3.restop.Entity.StickerView;
 import com.ut3.restop.R;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditImageActivity extends AppCompatActivity  implements SensorEventListener {
     private ImageView imageView;
     private Bitmap imageBitmap;
-
     private Bitmap imageResult;
-    private List<StickerView> stickerViews = new ArrayList<>();
     private float brightnessValue = 0;
-
     private boolean brightness = false;
-
     private boolean grey = false;
-
     private ViewGroup stickerContainer; // Le ViewGroup pour contenir les stickers
     private List<Bitmap> stickerBitmaps; // La liste des bitmaps pour les stickers
 
@@ -64,6 +59,40 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
         imageResult = imageBitmap;
         imageView.setImageBitmap(imageResult);
         imageView.setFocusable(true);
+        imageView.setClickable(true);
+
+        imageView.setOnDragListener( (v, e) -> {
+
+            // Handle each of the expected events.
+            switch(e.getAction()) {
+
+                case DragEvent.ACTION_DROP:
+
+                    ClipData.Item item = e.getClipData().getItemAt(0);
+                    if (item != null) {
+                        // Récupérer la chaîne encodée
+                        String bitmapString = item.getText().toString();
+                        // Maintenant, vous pouvez utiliser la chaîne pour décoder le Bitmap
+                        Bitmap bitmap = stringToBitmap(bitmapString);
+
+                        // Récupérer les coordonnées du drop
+                        int x = (int) e.getX();
+                        int y = (int) e.getY();
+
+                        // Insérer le sticker dans l'image principale
+                        insertStickerIntoImage(bitmap, x, y);
+
+                        // Afficher à nouveau le sticker
+                        v.setVisibility(View.VISIBLE);
+                    }
+
+                    return true;
+
+                // An unknown action type is received.
+                default:
+                    return true;
+            }
+        });
 
         // Appliquer un filtre à l'image lorsque l'utilisateur clique sur un bouton
         findViewById(R.id.greyFilterButton).setOnClickListener(new View.OnClickListener() {
@@ -228,78 +257,77 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
         stickerView.setFocusable(true);
         stickerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    ClipData data = ClipData.newPlainText("", "");
+            public boolean onTouch(View v, MotionEvent e) {
+                if(e.getAction() == MotionEvent.ACTION_DOWN) {
+                    ClipData data = ClipData.newPlainText("bitmapString", bitmapToString(stickerBitmap));
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
                     v.startDragAndDrop(data, shadowBuilder, v, 0);
                     v.setVisibility(View.INVISIBLE);
                     return true;
                 }
-                return false;
+                return  false;
             }
         });
 
-        stickerView.setOnDragListener( (v, e) -> {
-
-            // Handle each of the expected events.
-            switch(e.getAction()) {
-
+        stickerView.setOnDragListener((v, e) -> {
+            switch (e.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
+
+                case DragEvent.ACTION_DRAG_ENTERED:
 
                 case DragEvent.ACTION_DRAG_EXITED:
 
                 case DragEvent.ACTION_DRAG_ENDED:
-
-                case DragEvent.ACTION_DRAG_ENTERED:
                     v.invalidate();
                     return true;
 
-                case DragEvent.ACTION_DRAG_LOCATION:
-
-                    // Ignore the event.
-                    return true;
-
-                case DragEvent.ACTION_DROP:
-
-                    // Récupérer les coordonnées du drop
-                    int x = (int) e.getX();
-                    int y = (int) e.getY();
-
-                    // Insérer le sticker dans l'image principale
-                    insertStickerIntoImage((ImageView) e.getLocalState(), x, y);
-
-                    // Afficher à nouveau le sticker
-                    v.setVisibility(View.VISIBLE);
-
-                    return true;
-
-                // An unknown action type is received.
                 default:
                     break;
             }
             return false;
-
         });
+
         // Ajouter le sticker au ViewGroup
         stickerContainer.addView(stickerView);
     }
 
-    private void insertStickerIntoImage(ImageView stickerView, int x, int y) {
-        // Obtenez les coordonnées de l'image principale (imageView)
+    private void insertStickerIntoImage(Bitmap sticker, int x, int y) {
+        // Obtenir les coordonnées de l'image principale (imageView)
         int[] imageLocation = new int[2];
         imageView.getLocationOnScreen(imageLocation);
-
+        int imageWidth = imageView.getWidth();
+        int imageheight = imageView.getHeight();
         // Calculer les coordonnées réelles du drop dans l'image principale
-        int imageX = x - imageLocation[0];
-        int imageY = y - imageLocation[1];
+        int imageX = ((x*imageBitmap.getWidth())/ (imageLocation[0] + imageWidth))-15;
+        int imageY = ((y*imageBitmap.getHeight())/ (imageLocation[1] + imageheight))-15;
+        Bitmap resizedSticker = Bitmap.createScaledBitmap(sticker, 40, 40, false);
+        // Ajouter le sticker à l'image principale
+        Bitmap initImage = Bitmap.createBitmap(imageBitmap.getWidth(), imageBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(initImage);
+        canvas.drawBitmap(imageResult, 0, 0, null);
+        canvas.drawBitmap(resizedSticker, imageX, imageY, null);
+        imageView.setImageBitmap(initImage);
+        imageBitmap = initImage;
+        imageResult = imageBitmap;
+    }
 
-        // Ajoutez le sticker à l'image principale
-        Bitmap imageWithSticker = Bitmap.createBitmap(imageBitmap.getWidth(), imageBitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(imageWithSticker);
-        canvas.drawBitmap(imageBitmap, 0, 0, null);
-        canvas.drawBitmap(((BitmapDrawable) stickerView.getDrawable()).getBitmap(), imageX, imageY, null);
-        imageView.setImageBitmap(imageWithSticker);
+    public String bitmapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+
+    public Bitmap stringToBitmap(String encodedString){
+        try {
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 
 }
