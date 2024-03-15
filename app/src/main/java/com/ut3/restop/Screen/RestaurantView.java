@@ -1,51 +1,64 @@
 package com.ut3.restop.Screen;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ut3.restop.EntityCardView.CommentCardView;
-import com.ut3.restop.EntityCardView.MenuCardView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ut3.restop.Entity.Comment;
 import com.ut3.restop.Entity.Menu;
 import com.ut3.restop.Entity.Restaurant;
-import com.ut3.restop.Parcel.ImageParcel;
+import com.ut3.restop.EntityCardView.CommentCardView;
+import com.ut3.restop.EntityCardView.MenuCardView;
 import com.ut3.restop.R;
-import com.ut3.restop.Parcel.RestaurantParcel;
+import com.ut3.restop.Service.ImageService;
+import com.ut3.restop.Service.RestaurantService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 
-public class RestaurantView extends AppCompatActivity{
-    private Restaurant restaurant;
-    private Bitmap restaurantImage;
+
+public class RestaurantView extends AppCompatActivity {
+    RestaurantService restaurantService;
+
+    ImageService imageService;
+    List<Disposable> disposables = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        RestaurantParcel restaurantParcel = intent.getParcelableExtra("restaurant");
-        restaurant = restaurantParcel.getRestaurant();
-        ImageParcel parcelableImage = intent.getParcelableExtra("image");
-        restaurantImage = parcelableImage.getImage();
-
         setContentView(R.layout.restau);
-        displayRestauInformation();
+        String restaurantId = intent.getStringExtra("restaurantId");
+        restaurantService = RestaurantService.getInstance();
+        imageService = ImageService.getInstance();
+
+
+        disposables.add(restaurantService.getRestaurant(restaurantId).subscribe(restaurant -> {
+            displayComments(restaurant.getComments());
+            disposables.add(imageService.getImageBitmap(restaurant.getImage()).subscribe(imageOpt -> {
+                        if (imageOpt.isPresent())
+                            displayRestauInformation(restaurant, imageOpt.get());
+                    }
+            ));
+        }));
 
         List<Menu> menus = getMenuList();
-        List<Comment> comments = restaurant.getComments();
 
         // Obtenez le conteneur de la liste dans votre layout
         LinearLayout menuContainer = findViewById(R.id.menus_list);
-        LinearLayout commentContainer = findViewById(R.id.comment_list);
 
         // Ajoutez une carte pour chaque restaurant dans la liste
         for (Menu menu : menus) {
@@ -55,15 +68,6 @@ public class RestaurantView extends AppCompatActivity{
             cardView.setMenuIngredients(menu.getIngredients());
 
             menuContainer.addView(cardView);
-        }
-
-        for (Comment comment : comments) {
-            CommentCardView cardView = new CommentCardView(this);
-            cardView.setTitleTextView(comment.getTitle());
-            cardView.setDescriptionTextView(comment.getDescription());
-            cardView.setPseudoTextView("Paul");
-
-            commentContainer.addView(cardView);
         }
 
         Button reservationButton = findViewById(R.id.restau_reserver);
@@ -78,7 +82,40 @@ public class RestaurantView extends AppCompatActivity{
         });
     }
 
-    private void displayRestauInformation() {
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        View view = super.onCreateView(name, context, attrs);
+
+        return view;
+    }
+
+    private void displayComments(List<Comment> comments) {
+        LinearLayout commentContainer = findViewById(R.id.comment_list);
+        for (Comment comment : comments) {
+            CommentCardView cardView = new CommentCardView(this);
+            cardView.setTitleTextView(comment.getTitle());
+            cardView.setDescriptionTextView(comment.getDescription());
+            cardView.setPseudoTextView("Paul");
+            if (!comment.getImages().isEmpty()) {
+                disposables.add(imageService.getImageBitmap(comment.getImages().get(0)).subscribe(imageOpt -> {
+                            if (imageOpt.isPresent()) {
+                                cardView.setImageView(imageOpt.get());
+                            }
+                        }
+                ));
+            }
+            commentContainer.addView(cardView);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.forEach(disposable -> disposable.dispose());
+    }
+
+    private void displayRestauInformation(Restaurant restaurant, Bitmap restaurantImage) {
         TextView restauNom = findViewById(R.id.restau_nom);
         restauNom.setText(restaurant.getName());
         TextView restauPrix = findViewById(R.id.restau_prix);
@@ -90,7 +127,7 @@ public class RestaurantView extends AppCompatActivity{
         laisserAvisButton.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(context, CommentActivity.class);
-            intent.putExtra("id",restaurant.getId());
+            intent.putExtra("id", restaurant.getId());
             context.startActivity(intent);
         });
 

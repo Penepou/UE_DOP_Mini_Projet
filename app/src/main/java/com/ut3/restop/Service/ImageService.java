@@ -1,14 +1,7 @@
 package com.ut3.restop.Service;
 
-import android.app.Service;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Binder;
-import android.os.IBinder;
-
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -16,42 +9,50 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public class ImageService extends Service {
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.ReplaySubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
-        private FirebaseStorage storage;
-    private final IBinder binder = new LocalBinder();
+public class ImageService {
 
-    public class LocalBinder extends Binder {
-        public ImageService getService() {
-            return ImageService.this;
-        }
-    }
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            storage = FirebaseStorage.getInstance("gs://dopproject-ef7b9.appspot.com");
-        }
+    private static ImageService instance = null;
+    private final FirebaseStorage storage;
+    Subject<Map<String, Bitmap>> imagesMap = ReplaySubject.createWithSize(1);
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
+
+    private ImageService() {
+        storage = FirebaseStorage.getInstance("gs://dopproject-ef7b9.appspot.com");
+        imagesMap.onNext(new HashMap<>());
     }
 
-    public CompletableFuture<Bitmap> getImageBitmap(String Uri){
-        CompletableFuture<Bitmap> future = new CompletableFuture<>();
-        StorageReference imageRef = storage.getReference(Uri);
-        imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                future.complete(bitmap);
+    public static ImageService getInstance() {
+        if (instance == null) {
+            instance = new ImageService();
+        }
+        return instance;
+    }
+
+    public Observable<Optional<Bitmap>> getImageBitmap(String Uri) {
+        imagesMap.take(1).subscribe(map -> {
+            if (!map.containsKey(Uri)) {
+                StorageReference imageRef = storage.getReference(Uri);
+                imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        map.put(Uri, bitmap);
+                        imagesMap.onNext(map);
+                    }
+                });
             }
         });
-        return future;
+        return imagesMap.map(images -> Optional.ofNullable(images.get(Uri)));
     }
 
     public CompletableFuture<List<String>> saveCommentImages(List<Bitmap> bitmaps) {
@@ -71,20 +72,8 @@ public class ImageService extends Service {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] data = baos.toByteArray();
-
-                imageRef.putBytes(data).addOnSuccessListener(taskSnapshot -> {
-                    // Récupérer l'URI de l'image enregistrée
-                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        uris.add(uri.toString());
-                        // Si toutes les images ont été traitées, compléter le CompletableFuture avec la liste d'URI
-                        if (uris.size() == bitmaps.size()) {
-                            future.complete(uris);
-                        }
-                    });
-                }).addOnFailureListener(e -> {
-                    // En cas d'échec, compléter le CompletableFuture avec une liste vide
-                    future.complete(new ArrayList<>());
-                });
+                uris.add("Images/comments" + imageName);
+                imageRef.putBytes(data);
             }
         });
 
