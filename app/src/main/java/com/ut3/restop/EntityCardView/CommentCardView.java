@@ -1,6 +1,7 @@
 package com.ut3.restop.EntityCardView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,25 +12,25 @@ import com.ut3.restop.R;
 
 public class CommentCardView extends CardView {
 
-        private TextView titleTextView;
-        private TextView descriptionTextView;
-        private ImageView imageView;
-        private TextView pseudoTextView;
+    private TextView titleTextView;
+    private TextView descriptionTextView;
+    private ImageView imageView;
+    private TextView pseudoTextView;
 
-        public CommentCardView(Context context) {
-            super(context);
-            init();
-        }
+    public CommentCardView(Context context) {
+        super(context);
+        init();
+    }
 
-        public CommentCardView(Context context, AttributeSet attrs) {
-            super(context, attrs);
-            init();
-        }
+    public CommentCardView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
 
-        public CommentCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-            super(context, attrs, defStyleAttr);
-            init();
-        }
+    public CommentCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
 
     private void init() {
         inflate(getContext(), R.layout.comment_card_layout, this);
@@ -44,7 +45,7 @@ public class CommentCardView extends CardView {
     }
 
     public void setTitleTextView(String title) {
-        this.titleTextView.setText("par "+title);
+        this.titleTextView.setText("par " + title);
     }
 
     public TextView getDescriptionTextView() {
@@ -61,6 +62,10 @@ public class CommentCardView extends CardView {
 
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
+    }
+
+    public void setImageView(Bitmap image) {
+        this.imageView.setImageBitmap(image);
     }
 
     public TextView getPseudoTextView() {

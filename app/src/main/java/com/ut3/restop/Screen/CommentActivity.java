@@ -1,12 +1,8 @@
 package com.ut3.restop.Screen;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ut3.restop.Entity.Comment;
@@ -23,34 +21,43 @@ import com.ut3.restop.R;
 import com.ut3.restop.Service.ImageService;
 import com.ut3.restop.Service.RestaurantService;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class CommentActivity extends AppCompatActivity implements ServiceConnection {
+public class CommentActivity extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private final List<Bitmap> images = new ArrayList<>();
+    LinearLayout imagesLayout;
     private ImageService imageService;
     private RestaurantService restaurantService;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ActivityResultLauncher<Intent> takePictureLauncher;
-
     private EditText titleInput;
     private EditText editText;
     private Button laisserAvisButton;
+    // Écouteur de texte pour les deux EditText
+    private final TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            updateButtonState();
+        }
 
-    private List<Bitmap> images = new ArrayList<>();
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
-    LinearLayout imagesLayout;
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment);
-        bindService(new Intent(this, ImageService.class), this, Context.BIND_AUTO_CREATE);
-        bindService(new Intent(this, RestaurantService.class), this, Context.BIND_AUTO_CREATE);
+        restaurantService = RestaurantService.getInstance();
+        imageService = ImageService.getInstance();
         imagesLayout = findViewById(R.id.images);
         Intent intent = getIntent();
         String idRestaurant = intent.getStringExtra("id");
@@ -64,13 +71,13 @@ public class CommentActivity extends AppCompatActivity implements ServiceConnect
                         ImageView image = new ImageView(CommentActivity.this);
                         image.setImageBitmap(imageBitmap);
                         images.add(imageBitmap);
-                        int indice = images.size()-1;
+                        int indice = images.size() - 1;
                         image.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(CommentActivity.this, EditImageActivity.class);
                                 intent.putExtra("imageBitmap", imageBitmap);
-                                intent.putExtra("indice",indice);
+                                intent.putExtra("indice", indice);
                                 startActivityForResult(intent, 123);
                             }
                         });
@@ -93,12 +100,11 @@ public class CommentActivity extends AppCompatActivity implements ServiceConnect
         laisserAvisButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(images.isEmpty()){
-                    Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(),new ArrayList<>());
-                    restaurantService.addCommentToRestaurant(idRestaurant,comment);
+                if (images.isEmpty()) {
+                    Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(), new ArrayList<>());
+                    restaurantService.addCommentToRestaurant(idRestaurant, comment);
                     finish();
-                }
-                else {
+                } else {
                     CompletableFuture<List<String>> futureUris = imageService.saveCommentImages(images);
                     futureUris.thenAccept(uris -> {
                         Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(), uris);
@@ -111,7 +117,6 @@ public class CommentActivity extends AppCompatActivity implements ServiceConnect
             }
         });
     }
-
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -136,45 +141,15 @@ public class CommentActivity extends AppCompatActivity implements ServiceConnect
                     Bitmap result = (Bitmap) data.getExtras().getParcelable("image");
                     ImageView image = (ImageView) imagesLayout.getChildAt(indice);
                     image.setImageBitmap(result);
-                    images.set(indice,result);
+                    images.set(indice, result);
                 }
             }
         }
     }
 
-    // Écouteur de texte pour les deux EditText
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void afterTextChanged(Editable s) {
-            updateButtonState();
-        }
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-    };
-
     // Mettre à jour l'état du bouton en fonction du contenu des EditText
     private void updateButtonState() {
-        boolean isFieldsFilled = titleInput.getText().length() > 0 && editText.getText().length() > 0 && imageService!= null && restaurantService!= null;
+        boolean isFieldsFilled = titleInput.getText().length() > 0 && editText.getText().length() > 0 && imageService != null && restaurantService != null;
         laisserAvisButton.setEnabled(isFieldsFilled);
-    }
-
-    @Override
-    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-        if (componentName.equals(new ComponentName(this, ImageService.class))) {
-            ImageService.LocalBinder localBinder = (ImageService.LocalBinder) iBinder;
-            imageService = localBinder.getService();
-        }
-        if (componentName.equals(new ComponentName(this, RestaurantService.class))) {
-            RestaurantService.LocalBinder localBinder = (RestaurantService.LocalBinder) iBinder;
-            restaurantService = localBinder.getService();
-        }
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName componentName) {
-        imageService = null;
     }
 }

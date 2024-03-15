@@ -1,12 +1,6 @@
 package com.ut3.restop.Service;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -15,40 +9,39 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.ut3.restop.Entity.Comment;
 import com.ut3.restop.Entity.Restaurant;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 
-public class RestaurantService extends Service {
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.ReplaySubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
-        private FirebaseDatabase database;
-        private final IBinder binder = new RestaurantService.LocalBinder();
+public class RestaurantService {
 
-        public class LocalBinder extends Binder {
-            public RestaurantService getService() {
-                return RestaurantService.this;
-            }
+    private static RestaurantService instance = null;
+    private final FirebaseDatabase database;
+    Subject<Map<String, Restaurant>> restaurantsMap = ReplaySubject.createWithSize(1);
+
+    private RestaurantService() {
+        database = FirebaseDatabase.getInstance("https://dopproject-ef7b9-default-rtdb.europe-west1.firebasedatabase.app/");
+        restaurantsMap.onNext(new HashMap<>());
+        getRestaurants();
+    }
+
+    public static RestaurantService getInstance() {
+        if (instance == null) {
+            instance = new RestaurantService();
         }
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            database = FirebaseDatabase.getInstance("https://dopproject-ef7b9-default-rtdb.europe-west1.firebasedatabase.app/");
-        }
+        return instance;
+    }
 
-        @Nullable
-        @Override
-        public IBinder onBind(Intent intent) {
-            return binder;
-        }
-
-
-    public CompletableFuture<List<Restaurant>> getRestaurants() {
-        CompletableFuture<List<Restaurant>> future = new CompletableFuture<>();
+    public void getRestaurants() {
         DatabaseReference databaseRef = database.getReference("restaurants");
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -69,31 +62,43 @@ public class RestaurantService extends Service {
                         for (DataSnapshot imageComment : comment.child("images").getChildren()) {
                             images.add(imageComment.getValue(String.class));
                         }
-                        comments.add(new Comment(title,description,images));
+                        comments.add(new Comment(title, description, images));
                     }
                     restaurantList.add(new Restaurant(id, name, price, image, comments, latitude, longitude));
                 }
-                future.complete(restaurantList);
+                Map<String, Restaurant> map = new HashMap<>();
+                restaurantList.forEach(resto ->
+                        map.put(resto.getId(), resto));
+                restaurantsMap.onNext(map);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                future.completeExceptionally(databaseError.toException());
             }
         });
-        return future;
     }
+
+    public Observable<Collection<Restaurant>> getRestaurantsList() {
+        return restaurantsMap.map(map -> map.values());
+    }
+
+    public Observable<Restaurant> getRestaurant(String id) {
+        return restaurantsMap.map(map -> map.get(id));
+    }
+
 
     public void addCommentToRestaurant(String restaurantId, Comment comment) {
         DatabaseReference restaurantRef = database.getReference("restaurants").child(restaurantId).child("comments").push();
         restaurantRef.setValue(comment)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {}
+                    public void onSuccess(Void aVoid) {
+                    }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {}
+                    public void onFailure(@NonNull Exception e) {
+                    }
                 });
     }
 
