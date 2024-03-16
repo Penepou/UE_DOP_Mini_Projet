@@ -10,20 +10,24 @@ public class Restaurant {
     public String image;
     public List<Comment> comments = new ArrayList<>();
 
+    public List<Menu> menus = new ArrayList<>();
+
     public String id;
 
     public float latitude;
 
     public float longitude;
 
-    public Restaurant(){}
-  
-    public Restaurant(String id, String name, String price, String image, List<Comment> comments, float latitude, float longitude) {
+    public Restaurant() {
+    }
+
+    public Restaurant(String id, String name, String price, String image, List<Comment> comments, List<Menu> menus, float latitude, float longitude) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.image = image;
         this.comments = comments;
+        this.menus = menus;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -67,6 +71,14 @@ public class Restaurant {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
     }
 
     public float getLatitude() {
