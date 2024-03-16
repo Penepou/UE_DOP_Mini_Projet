@@ -72,9 +72,10 @@ public class ImageService {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] data = baos.toByteArray();
-                uris.add("Images/comments" + imageName);
+                uris.add("Images/comments/" + imageName);
                 imageRef.putBytes(data);
             }
+            future.complete(uris);
         });
 
         return future;
