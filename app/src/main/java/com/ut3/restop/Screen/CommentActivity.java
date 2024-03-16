@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -35,7 +36,9 @@ public class CommentActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> takePictureLauncher;
     private EditText titleInput;
     private EditText editText;
+    private RatingBar ratingBar;
     private Button laisserAvisButton;
+    private float commentRating = -1;
     // Écouteur de texte pour les deux EditText
     private final TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -87,6 +90,14 @@ public class CommentActivity extends AppCompatActivity {
         findViewById(R.id.take_photo).setOnClickListener(v -> dispatchTakePictureIntent());
         titleInput = findViewById(R.id.titleInput);
         editText = findViewById(R.id.editText);
+        ratingBar = findViewById(R.id.note);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                commentRating = rating;
+                updateButtonState();
+            }
+        });
         laisserAvisButton = findViewById(R.id.laisserAvis);
 
         // Désactiver le bouton "laisserAvis" au début
@@ -101,13 +112,13 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (images.isEmpty()) {
-                    Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(), new ArrayList<>());
+                    Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(), new ArrayList<>(), commentRating);
                     restaurantService.addCommentToRestaurant(idRestaurant, comment);
                     finish();
                 } else {
                     CompletableFuture<List<String>> futureUris = imageService.saveCommentImages(images);
                     futureUris.thenAccept(uris -> {
-                        Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(), uris);
+                        Comment comment = new Comment(titleInput.getText().toString(), editText.getText().toString(), uris, commentRating);
                         restaurantService.addCommentToRestaurant(idRestaurant, comment);
                         finish();
                     }).exceptionally(e -> {
@@ -138,7 +149,7 @@ public class CommentActivity extends AppCompatActivity {
                     imagesLayout.removeViewAt(indice);
                     images.remove(indice);
                 } else {
-                    Bitmap result = (Bitmap) data.getExtras().getParcelable("image");
+                    Bitmap result = data.getExtras().getParcelable("image");
                     ImageView image = (ImageView) imagesLayout.getChildAt(indice);
                     image.setImageBitmap(result);
                     images.set(indice, result);
@@ -149,7 +160,7 @@ public class CommentActivity extends AppCompatActivity {
 
     // Mettre à jour l'état du bouton en fonction du contenu des EditText
     private void updateButtonState() {
-        boolean isFieldsFilled = titleInput.getText().length() > 0 && editText.getText().length() > 0 && imageService != null && restaurantService != null;
+        boolean isFieldsFilled = titleInput.getText().length() > 0 && editText.getText().length() > 0 && imageService != null && restaurantService != null && commentRating != -1;
         laisserAvisButton.setEnabled(isFieldsFilled);
     }
 }

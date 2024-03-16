@@ -46,14 +46,6 @@
                     android:layout_height="188dp"
                     app:srcCompat="@drawable/default_img" />
 
-                <TextView
-                    android:id="@+id/textViewOsef3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="DESCRIPTION DU RESTAURANT"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="113dp"
@@ -63,8 +55,9 @@
                     <TextView
                         android:id="@+id/restau_nom"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:text="NOM" />
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/restau_prix"
@@ -73,29 +66,18 @@
                         android:text="PRIX MOYEN" />
 
                     <TextView
-                        android:id="@+id/restau_horaires"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="HORAIRES" />
-
-                    <TextView
-                        android:id="@+id/restau_note_moyenne"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="NOTE MOYENNE" />
-
-                    <TextView
                         android:id="@+id/restau_adresse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ADRESSE" />
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="68dp"
-                        android:gravity="center"
-                        android:text="ddddddddddddddddd" />
+                    <RatingBar
+                        android:id="@+id/restau_note_moyenne"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="0" />
 
                 </LinearLayout>
 
