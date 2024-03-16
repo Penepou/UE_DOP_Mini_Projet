@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -122,7 +123,8 @@ public class RestaurantView extends AppCompatActivity {
         restauPrix.setText(restaurant.getPrice());
         ImageView image = findViewById(R.id.image_restau);
         image.setImageBitmap(restaurantImage);
-
+        RatingBar ratingBar = findViewById(R.id.restau_note_moyenne);
+        ratingBar.setRating(calculerMoyenneNotes(restaurant.getComments()));
         Button laisserAvisButton = findViewById(R.id.restau_avis);
         laisserAvisButton.setOnClickListener(v -> {
             Context context = v.getContext();
@@ -132,6 +134,20 @@ public class RestaurantView extends AppCompatActivity {
         });
 
     }
+
+    public float calculerMoyenneNotes(List<Comment> comments) {
+        float totalNotes = 0;
+        int nbComments = comments.size();
+        for (Comment comment : comments) {
+            totalNotes += comment.getNote();
+        }
+        if (nbComments > 0) {
+            return totalNotes / nbComments;
+        } else {
+            return 0;
+        }
+    }
+
 
     private List<Menu> getMenuList() {
         List<Menu> menus = new ArrayList<>();
