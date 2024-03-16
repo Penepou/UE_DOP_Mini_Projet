@@ -136,16 +136,16 @@ public class RestaurantView extends AppCompatActivity {
     private List<Menu> getMenuList() {
         List<Menu> menus = new ArrayList<>();
         List<String> ingredients = new ArrayList<>();
-        ingredients.add("pipi");
-        ingredients.add("caca");
-        ingredients.add("prout");
+        ingredients.add("steak de boeuf");
+        ingredients.add("frites");
+        ingredients.add("sauce Tartare");
 
         menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
+        menus.add(new Menu("Menu 2", "10.5", ingredients));
+        menus.add(new Menu("Menu 3", "16", ingredients));
+        menus.add(new Menu("Menu 4", "9", ingredients));
+        menus.add(new Menu("Menu 5", "13", ingredients));
+        menus.add(new Menu("Menu 6", "12.5", ingredients));
 
         return menus;
     }
