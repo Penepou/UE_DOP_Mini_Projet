@@ -58,11 +58,12 @@ public class RestaurantService {
                     for (DataSnapshot comment : snapshot.child("comments").getChildren()) {
                         String title = comment.child("title").getValue(String.class);
                         String description = comment.child("description").getValue(String.class);
+                        float note = comment.child("note").getValue(float.class);
                         List<String> images = new ArrayList<>();
                         for (DataSnapshot imageComment : comment.child("images").getChildren()) {
                             images.add(imageComment.getValue(String.class));
                         }
-                        comments.add(new Comment(title, description, images));
+                        comments.add(new Comment(title, description, images, note));
                     }
                     restaurantList.add(new Restaurant(id, name, price, image, comments, latitude, longitude));
                 }

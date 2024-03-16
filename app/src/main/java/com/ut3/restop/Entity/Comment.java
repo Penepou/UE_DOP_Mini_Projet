@@ -6,14 +6,17 @@ public class Comment {
     private String title;
     private String description;
     private List<String> images;
+    private float note;
 
-    public Comment(){
+    public Comment() {
 
     }
-    public Comment(String title, String description, List<String> images) {
+
+    public Comment(String title, String description, List<String> images, float note) {
         this.title = title;
         this.description = description;
         this.images = images;
+        this.note = note;
     }
 
     public String getTitle() {
@@ -36,7 +39,19 @@ public class Comment {
         return images;
     }
 
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
     public void setImage(List<String> images) {
         this.images = images;
+    }
+
+    public float getNote() {
+        return note;
+    }
+
+    public void setNote(float note) {
+        this.note = note;
     }
 }
