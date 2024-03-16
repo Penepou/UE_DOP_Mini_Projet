@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".Screen.RestaurantView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".Screen.RestaurantView">
 
     <LinearLayout
         android:id="@+id/linearLayout0"
@@ -22,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:layout_constraintTop_toBottomOf="parent" >
+            app:layout_constraintTop_toBottomOf="parent">
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -47,14 +46,6 @@
                     android:layout_height="188dp"
                     app:srcCompat="@drawable/default_img" />
 
-                <TextView
-                    android:id="@+id/textViewOsef3"
-                    android:text="DESCRIPTION DU RESTAURANT"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="113dp"
@@ -64,8 +55,9 @@
                     <TextView
                         android:id="@+id/restau_nom"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:text="NOM" />
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/restau_prix"
@@ -74,44 +66,33 @@
                         android:text="PRIX MOYEN" />
 
                     <TextView
-                        android:id="@+id/restau_horaires"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="HORAIRES" />
-
-                    <TextView
-                        android:id="@+id/restau_note_moyenne"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="NOTE MOYENNE" />
-
-                    <TextView
                         android:id="@+id/restau_adresse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ADRESSE" />
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="68dp"
-                        android:gravity="center"
-                        android:text="ddddddddddddddddd" />
+                    <RatingBar
+                        android:id="@+id/restau_note_moyenne"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="0" />
 
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/textViewOsef1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="LISTE DES MENUS"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"/>
+                    android:textStyle="bold" />
 
                 <ScrollView
                     android:id="@+id/scroll_menus"
                     android:layout_width="match_parent"
-                    android:layout_height="206dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -123,22 +104,21 @@
                         android:id="@+id/menus_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    </LinearLayout>
+                        android:orientation="vertical"></LinearLayout>
                 </ScrollView>
 
                 <TextView
                     android:id="@+id/textViewOsef2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="LISTE DES COMMENTAIRES"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"/>
+                    android:textStyle="bold" />
 
                 <ScrollView
                     android:id="@+id/scroll_comments"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -150,8 +130,7 @@
                         android:id="@+id/comment_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    </LinearLayout>
+                        android:orientation="vertical"></LinearLayout>
                 </ScrollView>
 
             </LinearLayout>
@@ -161,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent" >
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
                 android:id="@+id/restau_avis"
@@ -179,4 +158,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
