@@ -49,27 +49,13 @@ public class RestaurantView extends AppCompatActivity {
 
         disposables.add(restaurantService.getRestaurant(restaurantId).subscribe(restaurant -> {
             displayComments(restaurant.getComments());
+            displayMenus(restaurant.getMenus());
             disposables.add(imageService.getImageBitmap(restaurant.getImage()).subscribe(imageOpt -> {
                         if (imageOpt.isPresent())
                             displayRestauInformation(restaurant, imageOpt.get());
                     }
             ));
         }));
-
-        List<Menu> menus = getMenuList();
-
-        // Obtenez le conteneur de la liste dans votre layout
-        LinearLayout menuContainer = findViewById(R.id.menus_list);
-
-        // Ajoutez une carte pour chaque restaurant dans la liste
-        for (Menu menu : menus) {
-            MenuCardView cardView = new MenuCardView(this);
-            cardView.setMenuName(menu.getName());
-            cardView.setMenuPrice(menu.getPrice());
-            cardView.setMenuIngredients(menu.getIngredients());
-
-            menuContainer.addView(cardView);
-        }
 
         Button reservationButton = findViewById(R.id.restau_reserver);
 
@@ -81,6 +67,37 @@ public class RestaurantView extends AppCompatActivity {
                 context.startActivity(intent);
             }
         });
+    }
+
+    private void displayMenus(List<Menu> menus) {
+        LinearLayout menuContainer = findViewById(R.id.menus_list);
+        for (Menu menu : menus) {
+            MenuCardView cardView = new MenuCardView(this);
+            cardView.setMenuName(menu.getName());
+            cardView.setMenuPrice(menu.getPrice());
+            cardView.setMenuIngredients(displayableMenuIngredients(menu.getIngredients()));
+            if (!menu.getImage().isBlank()) {
+                disposables.add(imageService.getImageBitmap(menu.getImage()).subscribe(imageOpt -> {
+                            if (imageOpt.isPresent()) {
+                                cardView.setMenuImage(imageOpt.get());
+                            }
+                        }
+                ));
+            }
+            menuContainer.addView(cardView);
+        }
+    }
+
+    private String displayableMenuIngredients(List<String> ingredients) {
+        String result = "Ingrédients : ";
+        for (int i = 0; i < ingredients.size(); i++) {
+            if (i < ingredients.size() - 1) {
+                result += ingredients.get(i) + ", ";
+            } else {
+                result += ingredients.get(i) + ".";
+            }
+        }
+        return result;
     }
 
     @Nullable
@@ -146,23 +163,5 @@ public class RestaurantView extends AppCompatActivity {
         } else {
             return 0;
         }
-    }
-
-
-    private List<Menu> getMenuList() {
-        List<Menu> menus = new ArrayList<>();
-        List<String> ingredients = new ArrayList<>();
-        ingredients.add("pipi");
-        ingredients.add("caca");
-        ingredients.add("prout");
-
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-        menus.add(new Menu("Menu 1", "12.5", ingredients));
-
-        return menus;
     }
 }

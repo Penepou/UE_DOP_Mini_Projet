@@ -1,21 +1,20 @@
 package com.ut3.restop.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
-    public String name;
-    public String price;
-    public String ingredients = "Contenu : ";
-    public Menu(String name, String price, List<String> ingredients) {
+    private String name;
+    private String price;
+    private List<String> ingredients = new ArrayList<>();
+
+    private String image;
+
+    public Menu(String name, String price, List<String> ingredients, String image) {
         this.name = name;
         this.price = price;
-        setIngredients(ingredients);
-    }
-    public void setIngredients(List<String> ingredients) {
-        for(String i : ingredients){
-            this.ingredients += ", "+ i;
-        }
-        this.ingredients+=".";
+        this.ingredients = ingredients;
+        this.image = image;
     }
 
     public String getName() {
@@ -30,10 +29,23 @@ public class Menu {
         return price;
     }
 
-    public void setPrix(String price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public String getIngredients(){ return ingredients;}
+    public List<String> getIngredients() {
+        return ingredients;
+    }
 
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

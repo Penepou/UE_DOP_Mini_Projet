@@ -51,7 +51,7 @@ public class ImageService {
                     }
                 });
             }
-        });
+        }).dispose();
         return imagesMap.map(images -> Optional.ofNullable(images.get(Uri)));
     }
 

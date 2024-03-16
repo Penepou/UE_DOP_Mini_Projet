@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ut3.restop.Entity.Comment;
+import com.ut3.restop.Entity.Menu;
 import com.ut3.restop.Entity.Restaurant;
 
 import java.util.ArrayList;
@@ -65,7 +66,19 @@ public class RestaurantService {
                         }
                         comments.add(new Comment(title, description, images, note));
                     }
-                    restaurantList.add(new Restaurant(id, name, price, image, comments, latitude, longitude));
+
+                    List<Menu> menus = new ArrayList<>();
+                    for (DataSnapshot menu : snapshot.child("menus").getChildren()) {
+                        String menuName = menu.child("name").getValue(String.class);
+                        String menuPrice = menu.child("price").getValue(String.class);
+                        String menuImage = menu.child("image").getValue(String.class);
+                        List<String> ingredients = new ArrayList<>();
+                        for (DataSnapshot ingredient : menu.child("ingredients").getChildren()) {
+                            ingredients.add(ingredient.getValue(String.class));
+                        }
+                        menus.add(new Menu(menuName, menuPrice, ingredients, menuImage));
+                    }
+                    restaurantList.add(new Restaurant(id, name, price, image, comments, menus, latitude, longitude));
                 }
                 Map<String, Restaurant> map = new HashMap<>();
                 restaurantList.forEach(resto ->

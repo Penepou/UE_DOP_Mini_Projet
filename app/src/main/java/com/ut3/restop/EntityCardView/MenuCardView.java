@@ -1,6 +1,7 @@
 package com.ut3.restop.EntityCardView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,44 +12,45 @@ import com.ut3.restop.R;
 
 public class MenuCardView extends CardView {
 
-        private TextView menuNameTextView;
-        private TextView menuPriceTextView;
-        private ImageView menuImageView;
-        private TextView menuIngredientsTextView;
+    private TextView menuNameTextView;
+    private TextView menuPriceTextView;
+    private ImageView menuImageView;
+    private TextView menuIngredientsTextView;
 
-        public MenuCardView(Context context) {
-            super(context);
-            init();
-        }
+    public MenuCardView(Context context) {
+        super(context);
+        init();
+    }
 
-        public MenuCardView(Context context, AttributeSet attrs) {
-            super(context, attrs);
-            init();
-        }
+    public MenuCardView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
 
-        public MenuCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-            super(context, attrs, defStyleAttr);
-            init();
-        }
+    public MenuCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
 
-        private void init() {
-            inflate(getContext(), R.layout.menu_card_layout, this);
-            menuNameTextView = findViewById(R.id.menu_name);
-            menuPriceTextView = findViewById(R.id.menu_price);
-            menuImageView = findViewById(R.id.comment_image);
-            menuIngredientsTextView = findViewById(R.id.menu_ingredients);
-        }
+    private void init() {
+        inflate(getContext(), R.layout.menu_card_layout, this);
+        menuNameTextView = findViewById(R.id.menu_name);
+        menuPriceTextView = findViewById(R.id.menu_price);
+        menuImageView = findViewById(R.id.menu_image);
+        menuIngredientsTextView = findViewById(R.id.menu_ingredients);
+    }
 
-        public void setMenuPrice(String restaurantPrice) {
-            menuPriceTextView.setText(restaurantPrice);
-        }
-        public void setMenuName(String restaurantName) {
-            menuNameTextView.setText(restaurantName);
-        }
+    public void setMenuPrice(String restaurantPrice) {
+        menuPriceTextView.setText(restaurantPrice);
+    }
 
-        public void setMenuImage(int resourceId) {
-            menuImageView.setImageResource(resourceId);
-        }
+    public void setMenuName(String restaurantName) {
+        menuNameTextView.setText(restaurantName);
+    }
+
+    public void setMenuImage(Bitmap image) {
+        menuImageView.setImageBitmap(image);
+    }
 
     public void setMenuIngredients(String menuIngredients) {
         menuIngredientsTextView.setText(menuIngredients);
