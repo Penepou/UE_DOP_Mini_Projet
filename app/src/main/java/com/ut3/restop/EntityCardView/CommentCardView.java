@@ -2,7 +2,9 @@ package com.ut3.restop.EntityCardView;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.provider.ContactsContract;
 import android.util.AttributeSet;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,12 +12,15 @@ import androidx.cardview.widget.CardView;
 
 import com.ut3.restop.R;
 
+import java.util.List;
+
 public class CommentCardView extends CardView {
 
     private TextView titleTextView;
     private TextView descriptionTextView;
-    private ImageView imageView;
-    private TextView pseudoTextView;
+    private List<ImageView> imageView;
+
+    private Button showImagesButton;
 
     public CommentCardView(Context context) {
         super(context);
@@ -36,8 +41,7 @@ public class CommentCardView extends CardView {
         inflate(getContext(), R.layout.comment_card_layout, this);
         titleTextView = findViewById(R.id.titleText);
         descriptionTextView = findViewById(R.id.descriptionText);
-        imageView = findViewById(R.id.comment_image);
-        pseudoTextView = findViewById(R.id.pseudoText);
+        showImagesButton = findViewById(R.id.imagesButton);
     }
 
     public TextView getTitleTextView() {
@@ -56,23 +60,25 @@ public class CommentCardView extends CardView {
         this.descriptionTextView.setText(description);
     }
 
-    public ImageView getImageView() {
+    public List<ImageView> getImageView() {
         return imageView;
     }
 
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
+    public void setImageView(int pos, Bitmap image) {
+        ImageView imageView1 = this.imageView.get(pos);
+        imageView1.setImageBitmap(image);
+        this.imageView.set(pos, imageView1);
     }
 
-    public void setImageView(Bitmap image) {
-        this.imageView.setImageBitmap(image);
+    public Button getShowImagesButton() {
+        return showImagesButton;
     }
 
-    public TextView getPseudoTextView() {
-        return pseudoTextView;
+    public void setVisibilityButton(int visibility) {
+        this.showImagesButton.setVisibility(visibility);
     }
 
-    public void setPseudoTextView(String pseudo) {
-        this.pseudoTextView.setText(pseudo);
+    public void setOnClickButton(int visibility) {
+        this.showImagesButton.setVisibility(visibility);
     }
 }

@@ -61,7 +61,7 @@ public class CommentActivity extends AppCompatActivity {
         setContentView(R.layout.comment);
         restaurantService = RestaurantService.getInstance();
         imageService = ImageService.getInstance();
-        imagesLayout = findViewById(R.id.images);
+        imagesLayout = findViewById(R.id.imagesLayout);
         Intent intent = getIntent();
         String idRestaurant = intent.getStringExtra("id");
 
@@ -89,7 +89,7 @@ public class CommentActivity extends AppCompatActivity {
                 });
         findViewById(R.id.take_photo).setOnClickListener(v -> dispatchTakePictureIntent());
         titleInput = findViewById(R.id.titleInput);
-        editText = findViewById(R.id.editText);
+        editText = findViewById(R.id.descriptionText);
         ratingBar = findViewById(R.id.note);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
