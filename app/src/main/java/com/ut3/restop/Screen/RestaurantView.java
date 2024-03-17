@@ -120,63 +120,42 @@ public class RestaurantView extends AppCompatActivity {
             cardView.setDescriptionTextView(comment.getDescription());
             cardView.setRating(comment.getNote());
 
+            List<Bitmap> images = new ArrayList<>();
+
             if (!comment.getImages().isEmpty()) {
                 for(int pos = 0; pos < comment.getImages().size() ; pos++){
-                    int finalPos = pos;
                     disposables.add(imageService.getImageBitmap(comment.getImages().get(pos)).subscribe(imageOpt -> {
                                 if (imageOpt.isPresent()) {
-                                    cardView.setImageView(finalPos, imageOpt.get());
+                                    images.add(imageOpt.get());
                                 }
                             }
                     ));
                 }
-
                 cardView.setVisibilityButton(View.VISIBLE);
-                /*cardView.getShowImagesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        afficherPopup(cardView.getImageView());
-                    }
-                });*/
+                cardView.getShowImagesButton().setOnClickListener(v -> afficherPopup(images));
             }
             commentContainer.addView(cardView);
         }
     }
-/*
-    private void afficherPopup(List<ImageView> images) {
-        // Créer un layout inflater
+
+    private void afficherPopup(List<Bitmap> images) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        // Charger le layout de la popup
         View popupView = inflater.inflate(R.layout.comment_popup, null);
 
-        // Créer une boîte de dialogue d'alerte
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(popupView);
         final AlertDialog dialog = builder.create();
 
-        // Récupérer le LinearLayout qui contiendra les images
         LinearLayout imageListLayout = popupView.findViewById(R.id.imagesLayout);
 
-        // Ajouter des images dynamiquement
-        for (ImageView image : images) {
-            imageListLayout.addView(image);
+        for (Bitmap image : images) {
+            ImageView imageView = new ImageView(this);
+            imageView.setImageBitmap(image);
+            imageListLayout.addView(imageView);
         }
-
-        // Récupérer le bouton de fermeture
-        Button closeButton = popupView.findViewById(R.id.closeButton);
-
-        // Définir le listener pour le bouton de fermeture
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss(); // Fermer la popup
-            }
-        });
-
-        // Afficher la popup
         dialog.show();
-    }*/
+    }
 
     @Override
     protected void onDestroy() {
