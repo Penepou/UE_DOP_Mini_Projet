@@ -18,10 +18,12 @@ public class Restaurant {
 
     public float longitude;
 
+    public String address;
+
     public Restaurant() {
     }
 
-    public Restaurant(String id, String name, String price, String image, List<Comment> comments, List<Menu> menus, float latitude, float longitude) {
+    public Restaurant(String id, String name, String price, String image, List<Comment> comments, List<Menu> menus, float latitude, float longitude, String address) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -30,6 +32,7 @@ public class Restaurant {
         this.menus = menus;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.address = address;
     }
 
     public String getId() {
@@ -95,5 +98,13 @@ public class Restaurant {
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
