@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,54 +11,57 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/cardview_light_background"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/menu_image"
             android:layout_width="75dp"
             android:layout_height="65dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="15dp"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/default_img" />
 
         <LinearLayout
             android:id="@+id/layoutInnerCard"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/menu_image"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="295dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/menu_name"
-                    android:layout_width="185dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="MENU 1" />
+                    android:text="MENU 1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:maxLines="2"
+                    android:gravity="start|center_vertical"/>
 
                 <TextView
                     android:id="@+id/menu_price"
-                    android:layout_width="107dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PRIX" />
-
+                    android:text="$"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="15dp"/>
             </LinearLayout>
 
             <TextView
                 android:id="@+id/menu_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
                 android:text="INGREDIENTS : ingredient1, ingredient2, ingredient3" />
 
         </LinearLayout>
