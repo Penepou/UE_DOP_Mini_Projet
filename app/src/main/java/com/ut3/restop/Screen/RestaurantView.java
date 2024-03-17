@@ -71,6 +71,7 @@ public class RestaurantView extends AppCompatActivity {
 
     private void displayMenus(List<Menu> menus) {
         LinearLayout menuContainer = findViewById(R.id.menus_list);
+        menuContainer.removeAllViews();
         for (Menu menu : menus) {
             MenuCardView cardView = new MenuCardView(this);
             cardView.setMenuName(menu.getName());
@@ -110,6 +111,7 @@ public class RestaurantView extends AppCompatActivity {
 
     private void displayComments(List<Comment> comments) {
         LinearLayout commentContainer = findViewById(R.id.comment_list);
+        commentContainer.removeAllViews();
         for (Comment comment : comments) {
             CommentCardView cardView = new CommentCardView(this);
             cardView.setTitleTextView(comment.getTitle());
