@@ -1,10 +1,12 @@
 package com.ut3.restop.Screen;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -116,18 +118,65 @@ public class RestaurantView extends AppCompatActivity {
             CommentCardView cardView = new CommentCardView(this);
             cardView.setTitleTextView(comment.getTitle());
             cardView.setDescriptionTextView(comment.getDescription());
-            cardView.setPseudoTextView("Paul");
+            cardView.setRating(comment.getNote());
+
             if (!comment.getImages().isEmpty()) {
-                disposables.add(imageService.getImageBitmap(comment.getImages().get(0)).subscribe(imageOpt -> {
-                            if (imageOpt.isPresent()) {
-                                cardView.setImageView(imageOpt.get());
+                for(int pos = 0; pos < comment.getImages().size() ; pos++){
+                    int finalPos = pos;
+                    disposables.add(imageService.getImageBitmap(comment.getImages().get(pos)).subscribe(imageOpt -> {
+                                if (imageOpt.isPresent()) {
+                                    cardView.setImageView(finalPos, imageOpt.get());
+                                }
                             }
-                        }
-                ));
+                    ));
+                }
+
+                cardView.setVisibilityButton(View.VISIBLE);
+                /*cardView.getShowImagesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        afficherPopup(cardView.getImageView());
+                    }
+                });*/
             }
             commentContainer.addView(cardView);
         }
     }
+/*
+    private void afficherPopup(List<ImageView> images) {
+        // Créer un layout inflater
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // Charger le layout de la popup
+        View popupView = inflater.inflate(R.layout.comment_popup, null);
+
+        // Créer une boîte de dialogue d'alerte
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(popupView);
+        final AlertDialog dialog = builder.create();
+
+        // Récupérer le LinearLayout qui contiendra les images
+        LinearLayout imageListLayout = popupView.findViewById(R.id.imagesLayout);
+
+        // Ajouter des images dynamiquement
+        for (ImageView image : images) {
+            imageListLayout.addView(image);
+        }
+
+        // Récupérer le bouton de fermeture
+        Button closeButton = popupView.findViewById(R.id.closeButton);
+
+        // Définir le listener pour le bouton de fermeture
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss(); // Fermer la popup
+            }
+        });
+
+        // Afficher la popup
+        dialog.show();
+    }*/
 
     @Override
     protected void onDestroy() {
