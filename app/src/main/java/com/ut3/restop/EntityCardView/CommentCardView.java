@@ -6,6 +6,7 @@ import android.provider.ContactsContract;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -19,7 +20,7 @@ public class CommentCardView extends CardView {
     private TextView titleTextView;
     private TextView descriptionTextView;
     private List<ImageView> imageView;
-
+    private RatingBar ratingBar;
     private Button showImagesButton;
 
     public CommentCardView(Context context) {
@@ -42,6 +43,7 @@ public class CommentCardView extends CardView {
         titleTextView = findViewById(R.id.titleText);
         descriptionTextView = findViewById(R.id.descriptionText);
         showImagesButton = findViewById(R.id.imagesButton);
+        ratingBar = findViewById(R.id.note);
     }
 
     public TextView getTitleTextView() {
@@ -49,7 +51,8 @@ public class CommentCardView extends CardView {
     }
 
     public void setTitleTextView(String title) {
-        this.titleTextView.setText("par " + title);
+
+        this.titleTextView.setText(title);
     }
 
     public TextView getDescriptionTextView() {
@@ -80,5 +83,13 @@ public class CommentCardView extends CardView {
 
     public void setOnClickButton(int visibility) {
         this.showImagesButton.setVisibility(visibility);
+    }
+
+    public RatingBar getRatingBar() {
+        return ratingBar;
+    }
+
+    public void setRating(float rating) {
+        this.ratingBar.setRating(rating);
     }
 }

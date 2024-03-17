@@ -116,6 +116,8 @@ public class RestaurantView extends AppCompatActivity {
             CommentCardView cardView = new CommentCardView(this);
             cardView.setTitleTextView(comment.getTitle());
             cardView.setDescriptionTextView(comment.getDescription());
+            cardView.setRating(comment.getNote());
+
             if (!comment.getImages().isEmpty()) {
                 for(int pos = 0; pos < comment.getImages().size() ; pos++){
                     int finalPos = pos;
