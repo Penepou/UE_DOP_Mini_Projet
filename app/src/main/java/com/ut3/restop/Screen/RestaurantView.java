@@ -141,6 +141,8 @@ public class RestaurantView extends AppCompatActivity {
         ImageView image = findViewById(R.id.image_restau);
         image.setImageBitmap(restaurantImage);
         RatingBar ratingBar = findViewById(R.id.restau_note_moyenne);
+        TextView restauAdresse = findViewById(R.id.restau_adresse);
+        restauAdresse.setText(restaurant.getAddress());
         ratingBar.setRating(calculerMoyenneNotes(restaurant.getComments()));
         Button laisserAvisButton = findViewById(R.id.restau_avis);
         laisserAvisButton.setOnClickListener(v -> {

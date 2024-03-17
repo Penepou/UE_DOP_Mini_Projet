@@ -55,6 +55,7 @@ public class RestaurantService {
                     String image = snapshot.child("image").getValue(String.class);
                     float latitude = snapshot.child("latitude").getValue(float.class);
                     float longitude = snapshot.child("longitude").getValue(float.class);
+                    String address = snapshot.child("address").getValue(String.class);
                     List<Comment> comments = new ArrayList<>();
                     for (DataSnapshot comment : snapshot.child("comments").getChildren()) {
                         String title = comment.child("title").getValue(String.class);
@@ -78,7 +79,7 @@ public class RestaurantService {
                         }
                         menus.add(new Menu(menuName, menuPrice, ingredients, menuImage));
                     }
-                    restaurantList.add(new Restaurant(id, name, price, image, comments, menus, latitude, longitude));
+                    restaurantList.add(new Restaurant(id, name, price, image, comments, menus, latitude, longitude, address));
                 }
                 Map<String, Restaurant> map = new HashMap<>();
                 restaurantList.forEach(resto ->
