@@ -4,39 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/genericComponent"
-        layout="@layout/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <ScrollView
         android:id="@+id/imagesScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:layout_marginHorizontal="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/closeButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/genericComponent">
+        android:background="@drawable/popup_background">
 
         <LinearLayout
             android:id="@+id/imagesLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="30dp"
             android:orientation="vertical"></LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/closeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/button_margin_horizontal"
-        android:text="FERMER"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
