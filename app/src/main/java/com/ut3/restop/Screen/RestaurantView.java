@@ -77,7 +77,7 @@ public class RestaurantView extends AppCompatActivity {
         for (Menu menu : menus) {
             MenuCardView cardView = new MenuCardView(this);
             cardView.setMenuName(menu.getName());
-            cardView.setMenuPrice(menu.getPrice());
+            cardView.setMenuPrice("$"+menu.getPrice());
             cardView.setMenuIngredients(displayableMenuIngredients(menu.getIngredients()));
             if (!menu.getImage().isBlank()) {
                 disposables.add(imageService.getImageBitmap(menu.getImage()).subscribe(imageOpt -> {

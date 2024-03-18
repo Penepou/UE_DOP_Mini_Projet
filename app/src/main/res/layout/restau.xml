@@ -44,11 +44,12 @@
                     android:id="@+id/image_restau"
                     android:layout_width="match_parent"
                     android:layout_height="188dp"
+                    android:layout_marginVertical="15dp"
                     app:srcCompat="@drawable/default_img" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="113dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -56,14 +57,9 @@
                         android:id="@+id/restau_nom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/restau_prix"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PRIX MOYEN" />
+                        android:textSize="24dp"
+                        android:textStyle="bold"
+                        android:text="TITRE RESTAURANT"/>
 
                     <TextView
                         android:id="@+id/restau_adresse"
@@ -71,10 +67,17 @@
                         android:layout_height="wrap_content"
                         android:text="ADRESSE" />
 
+                    <TextView
+                        android:id="@+id/restau_prix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PRIX MOYEN" />
+
                     <RatingBar
                         android:id="@+id/restau_note_moyenne"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
                         android:isIndicator="true"
                         android:numStars="5"
                         android:rating="0" />
@@ -87,14 +90,14 @@
                     android:layout_height="wrap_content"
                     android:text="LISTE DES MENUS"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="15dp"/>
 
                 <ScrollView
                     android:id="@+id/scroll_menus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.333"
                     app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +107,8 @@
                         android:id="@+id/menus_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"></LinearLayout>
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="15dp"></LinearLayout>
                 </ScrollView>
 
                 <TextView
@@ -112,15 +116,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="LISTE DES COMMENTAIRES"
+                    android:layout_marginVertical="10dp"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginHorizontal="15dp"/>
 
                 <ScrollView
                     android:id="@+id/scroll_comments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.333"
                     app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +134,8 @@
                         android:id="@+id/comment_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"></LinearLayout>
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="15dp"></LinearLayout>
                 </ScrollView>
 
             </LinearLayout>
