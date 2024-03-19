@@ -55,7 +55,9 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".Screen.CommentActivity"/>
+        <activity android:name=".Screen.CommentActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity android:name=".Screen.EditImageActivity" />
         <activity android:name=".Screen.ReservationDoneActivity" />
     </application>
