@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayRestaurants(List<Restaurant> restaurantList) {
         LinearLayout restaurantContainer = findViewById(R.id.restaurants_container);
-        restaurantContainer.removeAllViews();
         for (Restaurant restaurant : restaurantList) {
             RestaurantCardView cardView = new RestaurantCardView(this);
             //Redirect to restaurantView for each restaurant card view

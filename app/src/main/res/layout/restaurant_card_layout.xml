@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardView"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    app:cardCornerRadius="20dp"
-    app:cardBackgroundColor="#F7F2F9">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/layoutCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="#F7F2F9">
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/edittext_rounded_corner">
 
         <ImageView
             android:id="@+id/restaurant_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
+            android:layout_width="75dp"
+            android:layout_height="65dp"
+            android:layout_marginLeft="15dp"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/default_img" />
 
@@ -58,4 +53,4 @@
         </LinearLayout>
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
