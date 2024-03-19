@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.provider.ContactsContract;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -79,6 +80,10 @@ public class CommentCardView extends CardView {
 
     public void setVisibilityButton(int visibility) {
         this.showImagesButton.setVisibility(visibility);
+    }
+
+    public void setListenerButton(View.OnClickListener v){
+        this.showImagesButton.setOnClickListener(v);
     }
 
     public void setOnClickButton(int visibility) {
