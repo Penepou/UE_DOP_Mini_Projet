@@ -34,7 +34,7 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Observable;
 
 
-public class MapActivity extends AppCompatActivity{
+public class MapActivity extends AppCompatActivity {
 
     RestaurantService restaurantService;
 
@@ -57,8 +57,7 @@ public class MapActivity extends AppCompatActivity{
 
         map = (MapView) findViewById(R.id.map);
 
-
-        restauList.subscribe(restaurants->{
+        restauList.subscribe(restaurants -> {
             restaurants.forEach(restaurant -> {
                 String imgURI = restaurant.getImage();
                 float lat = restaurant.getLatitude();
@@ -66,35 +65,28 @@ public class MapActivity extends AppCompatActivity{
 
                 imageService.getImageBitmap(imgURI).subscribe(bitmap -> {
                     Bitmap bitmap1 = bitmap.get();
-
-                    Marker m = createMarker(map,lat,longi,bitmap1);
+                    Marker m = createMarker(map, lat, longi, bitmap1);
                     markerList.add(m);
                 }).dispose();
-
-
             });
-        } ).dispose();
+        }).dispose();
 
         markerList.forEach(marker -> {
-            
-            putMarker(map,marker);
+
+            putMarker(map, marker);
         });
-
-
 
         //load/initialize the osmdroid configuration
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
-
         map.setTileSource(TileSourceFactory.MAPNIK);
 
         map.setMultiTouchControls(true);
 
-
         IMapController mapController = map.getController();
 
-        centerMap(mapController,43.60431,1.44354,14.0);
+        centerMap(mapController, 43.60431, 1.44354, 14.0);
 
         String[] permissions = {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -155,43 +147,48 @@ public class MapActivity extends AppCompatActivity{
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
-    private void centerMap(IMapController controller, double lat, double longi, double zoom){
-        GeoPoint center = new GeoPoint(lat,longi);
+
+    private void centerMap(IMapController controller, double lat, double longi, double zoom) {
+        GeoPoint center = new GeoPoint(lat, longi);
         controller.setCenter(center);
         controller.setZoom(zoom);
     }
 
 
-
-    private Marker createMarker(MapView map, double lat, double longi, Drawable d){
-        GeoPoint gp = new GeoPoint(lat,longi);
+    private Marker createMarker(MapView map, double lat, double longi, Drawable d) {
+        GeoPoint gp = new GeoPoint(lat, longi);
         Marker marker = new Marker(map);
         Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
         Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
         marker.setIcon(dr);
         marker.setPosition(gp);
 
-        marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         return marker;
-    };
-    private Marker createMarker(MapView map, double lat, double longi, Bitmap b){
-        GeoPoint gp = new GeoPoint(lat,longi);
+    }
+
+    ;
+
+    private Marker createMarker(MapView map, double lat, double longi, Bitmap b) {
+        GeoPoint gp = new GeoPoint(lat, longi);
         Marker marker = new Marker(map);
         Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(b, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
         marker.setIcon(dr);
         marker.setPosition(gp);
 
-        marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         return marker;
-    };
+    }
+
+    ;
 
 
-    private void putMarker(MapView map,Marker marker){
+    private void putMarker(MapView map, Marker marker) {
         map.getOverlays().add(marker);
     }
 
-    private void addMarker(MapView map, double lat, double longi, Drawable d){
-        Marker marker = createMarker(map,lat,longi,d);
+    private void addMarker(MapView map, double lat, double longi, Drawable d) {
+        Marker marker = createMarker(map, lat, longi, d);
         map.getOverlays().add(marker);
     }
 }
