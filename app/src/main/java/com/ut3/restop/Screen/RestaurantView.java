@@ -125,14 +125,14 @@ public class RestaurantView extends AppCompatActivity {
             if (!comment.getImages().isEmpty()) {
                 for(int pos = 0; pos < comment.getImages().size() ; pos++){
                     disposables.add(imageService.getImageBitmap(comment.getImages().get(pos)).subscribe(imageOpt -> {
-                                if (imageOpt.isPresent()) {
+                                if (imageOpt.isPresent() && !images.contains(imageOpt.get())) {
                                     images.add(imageOpt.get());
                                 }
                             }
                     ));
                 }
                 cardView.setVisibilityButton(View.VISIBLE);
-                cardView.getShowImagesButton().setOnClickListener(v -> afficherPopup(images));
+                cardView.setListenerButton(v -> afficherPopup(images));
             }
             commentContainer.addView(cardView);
         }
