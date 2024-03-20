@@ -14,7 +14,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.ut3.restop.Entity.Restaurant;
 import com.ut3.restop.R;
+import com.ut3.restop.Service.ImageService;
+import com.ut3.restop.Service.RestaurantService;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -25,9 +28,20 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Observable;
 
 
 public class MapActivity extends AppCompatActivity{
+
+    RestaurantService restaurantService;
+
+    ImageService imageService;
+
+    private List<Marker> markerList = new ArrayList<>();
+
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
 
@@ -36,6 +50,35 @@ public class MapActivity extends AppCompatActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        restaurantService = RestaurantService.getInstance();
+        imageService = ImageService.getInstance();
+        Observable<Collection<Restaurant>> restauList = restaurantService.getRestaurantsList();
+        setContentView(R.layout.map);
+
+        map = (MapView) findViewById(R.id.map);
+
+
+        restauList.subscribe(restaurants->{
+            restaurants.forEach(restaurant -> {
+                String imgURI = restaurant.getImage();
+                float lat = restaurant.getLatitude();
+                float longi = restaurant.getLongitude();
+
+                imageService.getImageBitmap(imgURI).subscribe(bitmap -> {
+                    Bitmap bitmap1 = bitmap.get();
+
+                    Marker m = createMarker(map,lat,longi,bitmap1);
+                    markerList.add(m);
+                }).dispose();
+
+
+            });
+        } ).dispose();
+
+        markerList.forEach(marker -> {
+            
+            putMarker(map,marker);
+        });
 
 
 
@@ -43,9 +86,7 @@ public class MapActivity extends AppCompatActivity{
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
-        setContentView(R.layout.map);
 
-        map = (MapView) findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
         map.setMultiTouchControls(true);
@@ -125,16 +166,35 @@ public class MapActivity extends AppCompatActivity{
 
 
 
-    private void addMarker(MapView map, double lat, double longi,Drawable d){
-        GeoPoint truc = new GeoPoint(lat, longi);
+    private Marker createMarker(MapView map, double lat, double longi, Drawable d){
+        GeoPoint gp = new GeoPoint(lat,longi);
         Marker marker = new Marker(map);
-
         Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
         Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
         marker.setIcon(dr);
-        marker.setPosition(truc);
+        marker.setPosition(gp);
 
         marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        return marker;
+    };
+    private Marker createMarker(MapView map, double lat, double longi, Bitmap b){
+        GeoPoint gp = new GeoPoint(lat,longi);
+        Marker marker = new Marker(map);
+        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(b, (int) (48.0f * getResources().getDisplayMetrics().density), (int) (48.0f * getResources().getDisplayMetrics().density), true));
+        marker.setIcon(dr);
+        marker.setPosition(gp);
+
+        marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        return marker;
+    };
+
+
+    private void putMarker(MapView map,Marker marker){
+        map.getOverlays().add(marker);
+    }
+
+    private void addMarker(MapView map, double lat, double longi, Drawable d){
+        Marker marker = createMarker(map,lat,longi,d);
         map.getOverlays().add(marker);
     }
 }
