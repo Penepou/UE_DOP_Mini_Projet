@@ -94,10 +94,7 @@ public class MapActivity extends AppCompatActivity{
 
         IMapController mapController = map.getController();
 
-        centerMap(mapController,43.195140,0.608044,14.0);
-
-        Drawable d = ResourcesCompat.getDrawable(getResources(),R.drawable.map_icon,null);
-        addMarker(map,43.195140,0.608044,d);
+        centerMap(mapController,43.60431,1.44354,14.0);
 
         String[] permissions = {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
