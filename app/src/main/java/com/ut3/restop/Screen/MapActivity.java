@@ -8,11 +8,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.ut3.restop.Entity.Restaurant;
 import com.ut3.restop.R;
@@ -23,29 +24,27 @@ import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 
 public class MapActivity extends AppCompatActivity {
 
-    RestaurantService restaurantService;
-
-    ImageService imageService;
-
-    private List<Marker> markerList = new ArrayList<>();
-
-    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private MapView map = null;
-
     private static final int REQUEST_CODE = 1;
+    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+    private final List<Marker> markerList = new ArrayList<>();
+    RestaurantService restaurantService;
+    ImageService imageService;
+    List<Disposable> disposables = new ArrayList<>();
+    private MapView map = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,22 +53,31 @@ public class MapActivity extends AppCompatActivity {
         imageService = ImageService.getInstance();
         Observable<Collection<Restaurant>> restauList = restaurantService.getRestaurantsList();
         setContentView(R.layout.map);
+        Button exitButton = findViewById(R.id.btn_exit);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        map = findViewById(R.id.map);
 
-        map = (MapView) findViewById(R.id.map);
-
-        restauList.subscribe(restaurants -> {
+        disposables.add(restauList.subscribe(restaurants -> {
             restaurants.forEach(restaurant -> {
                 String imgURI = restaurant.getImage();
                 float lat = restaurant.getLatitude();
                 float longi = restaurant.getLongitude();
 
-                imageService.getImageBitmap(imgURI).subscribe(bitmap -> {
-                    Bitmap bitmap1 = bitmap.get();
-                    Marker m = createMarker(map, lat, longi, bitmap1);
-                    markerList.add(m);
-                }).dispose();
+                disposables.add(imageService.getImageBitmap(imgURI).subscribe(bitmap -> {
+                    if (bitmap.isPresent()) {
+                        Bitmap bitmap1 = bitmap.get();
+                        Marker m = createMarker(map, lat, longi, bitmap1);
+                        m.setTitle(restaurant.getName());
+                        markerList.add(m);
+                    }
+                }));
             });
-        }).dispose();
+        }));
 
         markerList.forEach(marker -> {
 
@@ -105,6 +113,12 @@ public class MapActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.forEach(disposable -> disposable.dispose());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
@@ -120,9 +134,7 @@ public class MapActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         ArrayList<String> permissionsToRequest = new ArrayList<>();
-        for (int i = 0; i < grantResults.length; i++) {
-            permissionsToRequest.add(permissions[i]);
-        }
+        permissionsToRequest.addAll(Arrays.asList(permissions).subList(0, grantResults.length));
         if (permissionsToRequest.size() > 0) {
             ActivityCompat.requestPermissions(
                     this,
@@ -167,8 +179,6 @@ public class MapActivity extends AppCompatActivity {
         return marker;
     }
 
-    ;
-
     private Marker createMarker(MapView map, double lat, double longi, Bitmap b) {
         GeoPoint gp = new GeoPoint(lat, longi);
         Marker marker = new Marker(map);
@@ -179,8 +189,6 @@ public class MapActivity extends AppCompatActivity {
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         return marker;
     }
-
-    ;
 
 
     private void putMarker(MapView map, Marker marker) {

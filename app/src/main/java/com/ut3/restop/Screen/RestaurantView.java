@@ -48,6 +48,12 @@ public class RestaurantView extends AppCompatActivity {
         restaurantService = RestaurantService.getInstance();
         imageService = ImageService.getInstance();
 
+        ImageView imageView = findViewById(R.id.map_icon);
+        imageView.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent intentMap = new Intent(context, MapActivity.class);
+            context.startActivity(intentMap);
+        });
 
         disposables.add(restaurantService.getRestaurant(restaurantId).subscribe(restaurant -> {
             displayComments(restaurant.getComments());
@@ -77,7 +83,7 @@ public class RestaurantView extends AppCompatActivity {
         for (Menu menu : menus) {
             MenuCardView cardView = new MenuCardView(this);
             cardView.setMenuName(menu.getName());
-            cardView.setMenuPrice("$"+menu.getPrice());
+            cardView.setMenuPrice("$" + menu.getPrice());
             cardView.setMenuIngredients(displayableMenuIngredients(menu.getIngredients()));
             if (!menu.getImage().isBlank()) {
                 disposables.add(imageService.getImageBitmap(menu.getImage()).subscribe(imageOpt -> {
@@ -123,7 +129,7 @@ public class RestaurantView extends AppCompatActivity {
             List<Bitmap> images = new ArrayList<>();
 
             if (!comment.getImages().isEmpty()) {
-                for(int pos = 0; pos < comment.getImages().size() ; pos++){
+                for (int pos = 0; pos < comment.getImages().size(); pos++) {
                     disposables.add(imageService.getImageBitmap(comment.getImages().get(pos)).subscribe(imageOpt -> {
                                 if (imageOpt.isPresent() && !images.contains(imageOpt.get())) {
                                     images.add(imageOpt.get());

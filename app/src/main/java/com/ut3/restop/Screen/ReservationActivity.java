@@ -2,6 +2,7 @@ package com.ut3.restop.Screen;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -34,6 +36,13 @@ public class ReservationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservation);
+
+        ImageView imageView = findViewById(R.id.map_icon);
+        imageView.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent intent = new Intent(context, MapActivity.class);
+            context.startActivity(intent);
+        });
 
         spinnerNbPersonnes = findViewById(R.id.spinner_nb_personnes);
         textViewDate = findViewById(R.id.text_view_date);
