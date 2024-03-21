@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -38,6 +39,8 @@ public class CommentActivity extends AppCompatActivity {
     private EditText editText;
     private RatingBar ratingBar;
     private Button laisserAvisButton;
+
+    TextView hintText;
     private float commentRating = -1;
     // Écouteur de texte pour les deux EditText
     private final TextWatcher textWatcher = new TextWatcher() {
@@ -74,6 +77,7 @@ public class CommentActivity extends AppCompatActivity {
                         ImageView image = new ImageView(CommentActivity.this);
                         image.setImageBitmap(imageBitmap);
                         images.add(imageBitmap);
+                        hintText.setVisibility(View.VISIBLE);
                         int indice = images.size() - 1;
                         image.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -91,6 +95,7 @@ public class CommentActivity extends AppCompatActivity {
         titleInput = findViewById(R.id.titleInput);
         editText = findViewById(R.id.descriptionText);
         ratingBar = findViewById(R.id.note);
+        hintText = findViewById(R.id.hintText);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
