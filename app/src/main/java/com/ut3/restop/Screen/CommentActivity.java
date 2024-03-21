@@ -1,5 +1,6 @@
 package com.ut3.restop.Screen;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -62,6 +63,12 @@ public class CommentActivity extends AppCompatActivity {
         restaurantService = RestaurantService.getInstance();
         imageService = ImageService.getInstance();
         imagesLayout = findViewById(R.id.imagesLayout);
+        ImageView imageView = findViewById(R.id.map_icon);
+        imageView.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent intent = new Intent(context, MapActivity.class);
+            context.startActivity(intent);
+        });
         Intent intent = getIntent();
         String idRestaurant = intent.getStringExtra("id");
 
