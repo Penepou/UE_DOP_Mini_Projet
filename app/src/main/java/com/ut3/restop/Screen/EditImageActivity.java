@@ -31,7 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditImageActivity extends AppCompatActivity  implements SensorEventListener {
+public class EditImageActivity extends AppCompatActivity implements SensorEventListener {
     private ImageView imageView;
     private Bitmap imageBitmap;
     private Bitmap imageResult;
@@ -56,55 +56,50 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
 
         imageView = findViewById(R.id.imageView);
         imageBitmap = getIntent().getParcelableExtra("imageBitmap");
-        int indice = getIntent().getIntExtra("indice",0);
+        int indice = getIntent().getIntExtra("indice", 0);
         imageResult = imageBitmap;
         imageView.setImageBitmap(imageResult);
         imageView.setFocusable(true);
         imageView.setClickable(true);
 
-        imageView.setOnDragListener( (v, e) -> {
+        imageView.setOnDragListener((v, e) -> {
 
             // Handle each of the expected events.
-            switch(e.getAction()) {
+            if (e.getAction() == DragEvent.ACTION_DROP) {
+                ClipData.Item item = e.getClipData().getItemAt(0);
+                if (item != null) {
+                    // Récupérer la chaîne encodée
+                    String bitmapString = item.getText().toString();
+                    // Maintenant, vous pouvez utiliser la chaîne pour décoder le Bitmap
+                    Bitmap bitmap = stringToBitmap(bitmapString);
 
-                case DragEvent.ACTION_DROP:
+                    // Récupérer les coordonnées du drop
+                    int x = (int) e.getX();
+                    int y = (int) e.getY();
 
-                    ClipData.Item item = e.getClipData().getItemAt(0);
-                    if (item != null) {
-                        // Récupérer la chaîne encodée
-                        String bitmapString = item.getText().toString();
-                        // Maintenant, vous pouvez utiliser la chaîne pour décoder le Bitmap
-                        Bitmap bitmap = stringToBitmap(bitmapString);
+                    // Insérer le sticker dans l'image principale
+                    insertStickerIntoImage(bitmap, x, y);
 
-                        // Récupérer les coordonnées du drop
-                        int x = (int) e.getX();
-                        int y = (int) e.getY();
+                    // Afficher à nouveau le sticker
+                    v.setVisibility(View.VISIBLE);
+                }
 
-                        // Insérer le sticker dans l'image principale
-                        insertStickerIntoImage(bitmap, x, y);
-
-                        // Afficher à nouveau le sticker
-                        v.setVisibility(View.VISIBLE);
-                    }
-
-                    return true;
+                return true;
 
                 // An unknown action type is received.
-                default:
-                    return true;
             }
+            return true;
         });
 
         // Appliquer un filtre à l'image lorsque l'utilisateur clique sur un bouton
         findViewById(R.id.greyFilterButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(grey){
+                if (grey) {
                     grey = false;
                     imageResult = imageBitmap;
                     imageView.setImageBitmap(imageBitmap);
-                }
-                else{
+                } else {
                     grey = true;
                     brightness = false;
                     applyGreyFilter();
@@ -115,12 +110,11 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
         findViewById(R.id.brightnessFilterButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(brightness){
+                if (brightness) {
                     brightness = false;
                     imageResult = imageBitmap;
                     imageView.setImageBitmap(imageBitmap);
-                }
-                else{
+                } else {
                     brightness = true;
                     grey = false;
                     applyBrightnessFilter(brightnessValue);
@@ -134,7 +128,7 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("deleteImage", true);
-                resultIntent.putExtra("indice",indice);
+                resultIntent.putExtra("indice", indice);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }
@@ -147,7 +141,7 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("image", imageResult);
                 resultIntent.putExtra("deleteImage", false);
-                resultIntent.putExtra("indice",indice);
+                resultIntent.putExtra("indice", indice);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }
@@ -236,7 +230,7 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
 
 
     private void loadStickersFromResource() {
-        int[] stickerResourceIds = {R.drawable.petoche};
+        int[] stickerResourceIds = {R.drawable.rongeur};
         // Charger les bitmaps pour chaque sticker
         for (int resourceId : stickerResourceIds) {
             Bitmap stickerBitmap = BitmapFactory.decodeResource(getResources(), resourceId);
@@ -261,14 +255,14 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
         stickerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent e) {
-                if(e.getAction() == MotionEvent.ACTION_DOWN) {
+                if (e.getAction() == MotionEvent.ACTION_DOWN) {
                     ClipData data = ClipData.newPlainText("bitmapString", bitmapToString(stickerBitmap));
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
                     v.startDragAndDrop(data, shadowBuilder, v, 0);
                     v.setVisibility(View.INVISIBLE);
                     return true;
                 }
-                return  false;
+                return false;
             }
         });
 
@@ -301,8 +295,8 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
         int imageWidth = imageView.getWidth();
         int imageheight = imageView.getHeight();
         // Calculer les coordonnées réelles du drop dans l'image principale
-        int imageX = ((x*imageBitmap.getWidth())/ (imageLocation[0] + imageWidth))-15;
-        int imageY = ((y*imageBitmap.getHeight())/ (imageLocation[1] + imageheight))-15;
+        int imageX = ((x * imageBitmap.getWidth()) / (imageLocation[0] + imageWidth)) - 15;
+        int imageY = ((y * imageBitmap.getHeight()) / (imageLocation[1] + imageheight)) - 15;
         Bitmap resizedSticker = Bitmap.createScaledBitmap(sticker, 40, 40, false);
         // Ajouter le sticker à l'image principale
         Bitmap initImage = Bitmap.createBitmap(imageBitmap.getWidth(), imageBitmap.getHeight(), Bitmap.Config.ARGB_8888);
@@ -314,20 +308,20 @@ public class EditImageActivity extends AppCompatActivity  implements SensorEvent
         imageResult = imageBitmap;
     }
 
-    public String bitmapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+    public String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
 
-    public Bitmap stringToBitmap(String encodedString){
+    public Bitmap stringToBitmap(String encodedString) {
         try {
-            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.getMessage();
             return null;
         }
