@@ -17,11 +17,12 @@
         android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center|center_horizontal|center_vertical"
         android:layout_marginTop="15dp"
+        android:gravity="center|center_horizontal|center_vertical"
         android:text="LAISSER UN AVIS"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintTop_toBottomOf="@+id/genericComponent" />
 
     <LinearLayout
@@ -29,8 +30,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/linearButtons"
-        app:layout_constraintTop_toBottomOf="@+id/titleView">
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="@+id/genericComponent">
 
         <RatingBar
             android:id="@+id/note"
@@ -47,7 +50,6 @@
             android:id="@+id/titleInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/edittext_rounded_corner"
             android:hint="  Titre"
@@ -62,20 +64,36 @@
             android:id="@id/descriptionText"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp"
             android:background="@drawable/edittext_rounded_corner"
             android:hint="  Commentaire...."
             android:inputType="textMultiLine"
             android:paddingHorizontal="8dp"
             android:paddingVertical="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/hintText"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:hint="Cliquez sur la ou les images pour ajouter des filtres !"
+            android:textStyle="italic" />
 
         <ScrollView
             android:id="@+id/imagesScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -85,6 +103,7 @@
                 android:orientation="vertical"></LinearLayout>
         </ScrollView>
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/linearButtons"
